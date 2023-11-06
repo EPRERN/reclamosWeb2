@@ -1,0 +1,8 @@
+<div class="card flex justify-content-center">
+    <input type="file" #fileInput multiple>
+    <br><br>
+    <div class="py-3"><font color="#blue">El tope de archivos es de 3 MB en total</font></div>
+    <button (click)="uploadFiles(fileInput)">Subir Archivos</button>
+    <hr><br>
+    <div>Archivos Subidos: 🙄</div>
+</div>

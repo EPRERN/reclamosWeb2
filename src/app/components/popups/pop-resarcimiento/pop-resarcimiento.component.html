@@ -1,0 +1,50 @@
+<div class="modal">
+	<article class="modal-container">
+		<header class="modal-container-header">
+			<span class="modal-container-title" style="color: #750550">
+				<svg aria-hidden="true" height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M0 0h24v24H0z" fill="none"></path>
+					<path d="M14 9V4H5v16h6.056c.328.417.724.785 1.18 1.085l1.39.915H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8v1h-7zm-2 2h9v5.949c0 .99-.501 1.916-1.336 2.465L16.5 21.498l-3.164-2.084A2.953 2.953 0 0 1 12 16.95V11zm2 5.949c0 .316.162.614.436.795l2.064 1.36 2.064-1.36a.954.954 0 0 0 .436-.795V13h-5v3.949z" fill="currentColor"></path>
+				</svg>
+				ATENCIÓN !
+			</span>
+			<button class="icon-button" (click)="closeModal()">
+				<svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path d="M0 0h24v24H0z" fill="none"></path>
+					<path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" fill="currentColor"></path>
+				</svg>
+			</button>
+		</header>
+		<section #pdfContent class="modal-container-body rtf">
+			<span> Si usted inicia un reclamo por Resarcimiento por daños, se le informa que la siguiente<FONT color="rgb(140, 198, 63);"> <strong> documentación debe ser previamente presentada</strong></FONT> para poder dar inicio formal al Reclamo. Es necesario presentar: </span>
+            <ol>
+                <li> &nbsp;&nbsp; * Descripción del hecho con la mayor precisión posible (día y hora)</li><br>
+                <li> &nbsp;&nbsp; * Domicilio en el que se registró el suceso.</li><br>
+                <li> &nbsp;&nbsp; * Detalle de Artefactos dañados.</li><br>
+                <li>&nbsp;*&nbsp;<u>Informe Técnico detallando:</u>
+                    <ol>
+                        <span>(a) * Artefacto: marca, modelo, número de serie</span><br>
+                        <span>(b) * Componentes internos dañados </span><br>
+                        <span>(c) * Causa del daño</span><br>
+                    </ol>
+                </li>
+                <li>&nbsp;&nbsp;* Domicilio en el que se encuentran actualmente los artefactos dañados.</li><br>
+                <li>&nbsp;&nbsp;* (Si los artefactos fueron reparados), le sugerimos acompañe la factura fiscal correspondiente o la conserve como resguardo probatorio.</li>
+
+                
+            </ol>
+            <br>
+            <p><FONT color="rgb(140, 198, 63);"><strong><u>Aclaración:</u></strong></FONT></p>
+            
+			<p>Sr. Usuario, recuerde que ante reclamos por daños en instalaciones eléctricas, éste Ente únicamente puede resolver sobre el daño material y actual sobre tales bienes. El resto de los daños que Ud. considere que deban ser resarcidos (lucro cesante, daño moral, etc.) deberán ser reclamados judicialmente o por alguna vía alternativa a la resolución de conflictos </p>
+
+		</section>
+		<footer class="modal-container-footer">
+            <button class="button is-ghost" (click)="closeModal()">Cerrar</button>
+            <button class="button is-primary" (click)="downloadAsPDF()">Descargar</button>
+			<p-toast></p-toast>
+			<!-- <button type="button" pButton pRipple (click)="showSuccess()" label="Success" class="p-button-success"></button> -->
+		</footer>
+          
+	</article>
+</div>

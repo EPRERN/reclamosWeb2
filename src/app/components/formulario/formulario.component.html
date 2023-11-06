@@ -1,0 +1,140 @@
+<br><br><br>
+<div class="container">
+    <div class="card-container">
+        <div class="custom-card">
+            <h2 class="myHeader">Datos Reclamante</h2>
+            <p-divider></p-divider>
+
+            <form [formGroup]="formularioReclamo" (ngSubmit)="onSubmit()">
+                <br><br>
+                <div class="group">
+                    <input formControlName="nombre" id="nombre" required="" type="text" class="input">
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Ingrese su Nombre &nbsp;/s</label>
+                </div>
+                <br>
+                <br>
+                <div class="group">
+                    <input formControlName="apellido" id="apellido" required="" type="text" class="input">
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Ingrese su Apellido</label>
+                </div>
+                <br>
+                <br>
+                <div class="group">
+                    <input formControlName="dni" id="dni" required="" type="text" class="input">
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Ingrese su DNI</label>
+                </div>
+                <br>
+                <br>
+                <br>
+                <p-divider></p-divider>
+                <div class="checkbox-container">
+                    <span>
+                        <FONT color="#42752a">De no Actuar en Nombre Propio marque aquí: &nbsp;</FONT>
+                    </span>
+                    <div class="checkbox-wrapper-31">
+                        <input checked="" type="checkbox">
+                        <svg viewBox="0 0 35.6 35.6">
+                            <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                            <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                            <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <p-divider></p-divider>
+            </form>
+        </div>
+        <div class="w-full md:w-2">
+            <p-divider layout="vertical" styleClass="hidden md:flex"><b>
+                    <FONT size="5" color="#6cbe45">↓</FONT>
+                </b></p-divider>
+
+        </div>
+
+        <div class="custom-card">
+            <h2 class="myHeader">Datos Suministro</h2>
+            <p-divider></p-divider>
+
+            <form [formGroup]="formularioReclamo" (ngSubmit)="onSubmit()">
+                <br><br>
+                <div class="group">
+                    <input formControlName="direccion" id="direccion" required="" type="text" class="input">
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Ingrese su Dirección</label>
+                </div>
+                <br>
+                <br>
+                <select class="custom-select" aria-label="Default select example" formControlName="localidad" (change)="updatePostalCode($event)">
+                    <option selected>Seleccione una localidad</option>
+                    <option *ngFor="let localidad of localidades" [value]="localidad.localidad">{{ localidad.localidad }}</option>
+                  </select>
+                  <br>
+                  <br>
+                  <div class="group">
+                    <input formControlName="codigoPostal" id="codigoPostal" required type="text" class="input" [disabled]="true">
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>Código Postal</label>
+                  </div>                  
+                <br>
+                <br>
+                <div class="group">
+                    <input formControlName="telefono" id="telefono" required="" type="text" class="input">
+                    <span class="highlight"></span>
+                    <span class="bar"></span>
+                    <label>telefono</label>
+                </div>
+                <br>
+                <br>
+                <br>
+                <div class="checkbox-container">
+                    <div class="checkbox-wrapper-31">
+                        <input type="checkbox" formControlName="emailNotifications" (change)="toggleEmailInput()">
+                        <svg viewBox="0 0 35.6 35.6">
+                            <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                            <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                            <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                        </svg>
+                    </div>
+                    <span>
+                        <FONT color="#42752a">&nbsp;&nbsp;Quiero Recibir notificaciones del EPRE en mi &nbsp;&nbsp;&nbsp;&nbsp;correo: </FONT>
+                    </span>
+                </div>
+                <br>
+                <form class="subscribe-form" *ngIf="isChecked">
+                    <input class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email"
+                        style="color: black;" [disabled]="!formularioReclamo.get('emailNotifications')?.value">
+                </form>
+                <br><br>
+
+                <br>
+                <br>
+
+            </form>
+        </div>
+        <div class="w-full md:w-2">
+            <p-divider layout="vertical" styleClass="hidden md:flex"><b>
+                    <FONT size="5" color="#6cbe45">↓</FONT>
+                </b></p-divider>
+          
+        </div>
+    </div>
+
+
+    <app-resarcimiento></app-resarcimiento>
+
+    <app-file-upload></app-file-upload>
+
+
+    <br><br>
+
+
+    <button class="button" type="submit" label="Submit">Enviar</button>
+    <br><br><br>
+    <hr>
