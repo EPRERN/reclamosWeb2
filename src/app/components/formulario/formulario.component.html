@@ -1,6 +1,8 @@
 <br><br><br>
+<!-- CONTENEDOR DE LA PANTALLA COMPLETA  -->
 <div class="container">
-    <div class="card-container">
+    
+        <!-- CARD DE DATOS RECLAMANTE  -->
         <div class="custom-card">
             <h2 class="myHeader">Datos Reclamante</h2>
             <p-divider></p-divider>
@@ -70,18 +72,21 @@
                 </div>
                 <br>
                 <br>
-                <select class="custom-select" aria-label="Default select example" formControlName="localidad" (change)="updatePostalCode($event)">
+                <select class="custom-select" aria-label="Default select example" formControlName="localidad"
+                    (change)="updatePostalCode($event)">
                     <option selected>Seleccione una localidad</option>
-                    <option *ngFor="let localidad of localidades" [value]="localidad.localidad">{{ localidad.localidad }}</option>
-                  </select>
-                  <br>
-                  <br>
-                  <div class="group">
-                    <input formControlName="codigoPostal" id="codigoPostal" required type="text" class="input" [disabled]="true">
+                    <option *ngFor="let localidad of localidades" [value]="localidad.localidad">{{ localidad.localidad
+                        }}</option>
+                </select>
+                <br>
+                <br>
+                <div class="group">
+                    <input formControlName="codigoPostal" id="codigoPostal" required type="text" class="input"
+                        [disabled]="true">
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label>Código Postal</label>
-                  </div>                  
+                </div>
                 <br>
                 <br>
                 <div class="group">
@@ -103,7 +108,8 @@
                         </svg>
                     </div>
                     <span>
-                        <FONT color="#42752a">&nbsp;&nbsp;Quiero Recibir notificaciones del EPRE en mi &nbsp;&nbsp;&nbsp;&nbsp;correo: </FONT>
+                        <FONT color="#42752a">&nbsp;&nbsp;Quiero Recibir notificaciones del EPRE en mi
+                           correo: </FONT>
                     </span>
                 </div>
                 <br>
@@ -122,9 +128,11 @@
             <p-divider layout="vertical" styleClass="hidden md:flex"><b>
                     <FONT size="5" color="#6cbe45">↓</FONT>
                 </b></p-divider>
-          
+
         </div>
-    </div>
+
+
+
 
 
     <app-resarcimiento></app-resarcimiento>
@@ -138,3 +146,5 @@
     <button class="button" type="submit" label="Submit">Enviar</button>
     <br><br><br>
     <hr>
+
+</div>
