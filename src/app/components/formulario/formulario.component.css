@@ -107,7 +107,12 @@ button:active {
 
 }
 
-
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 .custom-card {
   /* background-color: #fff; */
@@ -117,10 +122,6 @@ button:active {
   margin: 20px 10px;
   width: 90%;
   max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .custom-select {
@@ -376,6 +377,10 @@ button:active {
   }
  }
  
+ .customP{
+  margin-bottom: -5px;
+  color: #39501a;
+ }
 
  .subscribe-form {
   --main-focus: #8cc63f;

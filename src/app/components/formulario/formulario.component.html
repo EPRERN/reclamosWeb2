@@ -1,128 +1,198 @@
 <br><br><br>
 <!-- CONTENEDOR DE LA PANTALLA COMPLETA  -->
 <div class="container">
-    
-        <!-- CARD DE DATOS RECLAMANTE  -->
-        <div class="custom-card">
-            <h2 class="myHeader">Datos Reclamante</h2>
-            <p-divider></p-divider>
 
-            <form [formGroup]="formularioReclamo" (ngSubmit)="onSubmit()">
-                <br><br>
-                <div class="group">
-                    <input formControlName="nombre" id="nombre" required="" type="text" class="input">
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Ingrese su Nombre &nbsp;/s</label>
+    <!-- CARD DE DATOS RECLAMANTE  -->
+
+
+
+    <form [formGroup]="formularioReclamo" (ngSubmit)="onsubmit()">
+        <div class="custom-card">
+            <p-divider></p-divider>
+            <h1 class="myHeader">
+                <FONT size="6">Datos Reclamante</FONT>
+            </h1>
+            <p-divider></p-divider>
+            <br><br>
+            <div class="group">
+                <span class="highlight"></span>
+                <input formControlName="nombre" id="nombre" required="" type="text" class="input">
+                <span class="bar"></span>
+                <label>Ingrese su Nombre &nbsp;/s</label>
+            </div>
+            <br>
+            <br>
+            <div class="group">
+                <input formControlName="apellido" id="apellido" required="" type="text" class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Ingrese su Apellido</label>
+            </div>
+            <br>
+            <br>
+            <div class="group">
+                <input formControlName="dni" id="dni" required="" type="text" class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Ingrese su DNI</label>
+            </div>
+            <br>
+            <br>
+            <div class="checkbox-container">
+                <span>
+                    <FONT color="#42752a">De NO actuar en nombre propio marque aquí: &nbsp;</FONT>
+                </span>
+                <div class="checkbox-wrapper-31">
+                    <input #checkboxInput type="checkbox" (change)="togglecheckNombrePropioInput()">
+
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
                 </div>
-                <br>
-                <br>
-                <div class="group">
-                    <input formControlName="apellido" id="apellido" required="" type="text" class="input">
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Ingrese su Apellido</label>
-                </div>
-                <br>
-                <br>
-                <div class="group">
-                    <input formControlName="dni" id="dni" required="" type="text" class="input">
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Ingrese su DNI</label>
-                </div>
-                <br>
-                <br>
-                <br>
-                <p-divider></p-divider>
-                <div class="checkbox-container">
-                    <span>
-                        <FONT color="#42752a">De no Actuar en Nombre Propio marque aquí: &nbsp;</FONT>
-                    </span>
-                    <div class="checkbox-wrapper-31">
-                        <input checked="" type="checkbox">
-                        <svg viewBox="0 0 35.6 35.6">
-                            <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
-                            <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
-                            <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
-                        </svg>
-                    </div>
-                </div>
-                <p-divider></p-divider>
-            </form>
+            </div>
+            <br>
+
+            <div class="group" *ngIf="isChecked3">
+                <input formControlName="nombreRepresentante" id="nombreRepresentante" required="" type="text"
+                    class="input" [disabled]="!formularioReclamo.get('nombreRepresentante')?.value">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Ingrese Nombre del Representante</label>
+            </div><br>
+            <div class="group" *ngIf="isChecked3">
+                <input formControlName="apellidoRepresentante" id="apellidoRepresentante" required="" type="text"
+                    class="input" [disabled]="!formularioReclamo.get('apellidoRepresentante')?.value">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Ingrese Apellido del Representante</label>
+            </div><br>
+            <div class="group" *ngIf="isChecked3">
+                <input formControlName="dniRepresentante" id="dniRepresentante" required="" type="text" class="input"
+                    [disabled]="!formularioReclamo.get('dniRepresentante')?.value">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Ingrese DNI del Representante</label>
+            </div><br>
+
+
+            <br>
         </div>
+
+
         <div class="w-full md:w-2">
             <p-divider layout="vertical" styleClass="hidden md:flex"><b>
-                    <FONT size="5" color="#6cbe45">↓</FONT>
+                    <FONT size="7" color="#6cbe45">↓</FONT>
                 </b></p-divider>
+        </div>
+
+
+
+        <div class="custom-card">
+            <p-divider></p-divider>
+            <h1 class="myHeader">
+                <FONT size="6">Datos Suministro</FONT>
+            </h1>
+            <p-divider></p-divider>
+            <br><br>
+
+            <div class="group">
+                <input formControlName="direccion" id="direccion" required="" type="text" class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Ingrese su Dirección</label>
+            </div>
+            <br>
+            <br>
+            <p class="customP">Seleccione una Localidad:</p>
+            <select class="custom-select" aria-label="Default select example" formControlName="localidad"
+                (change)="updatePostalCode($event)">
+
+                <option selected style="color: #507224;">Seleccione una localidad</option>
+                <option *ngFor="let localidad of localidades" [value]="localidad.localidad">{{ localidad.localidad
+                    }}</option>
+            </select>
+            <br><br>
+            <div class="group">
+                <p class="customP">Código Postal:</p>
+                <input formControlName="codigoPostal" id="codigoPostal" required type="text" class="input"
+                readonly>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+            </div>
+<br><br>
+            <div class="checkbox-container">
+                <span>
+                    <FONT color="#42752a">Coincide con la Dirección de Suministro: &nbsp;</FONT>
+                </span>
+                <div class="checkbox-wrapper-31">
+                    <input #checkboxInput type="checkbox" (change)="onCheckboxChange($event)">
+
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </div>
 
         </div>
+
+
 
         <div class="custom-card">
             <h2 class="myHeader">Datos Suministro</h2>
             <p-divider></p-divider>
 
-            <form [formGroup]="formularioReclamo" (ngSubmit)="onSubmit()">
-                <br><br>
-                <div class="group">
-                    <input formControlName="direccion" id="direccion" required="" type="text" class="input">
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Ingrese su Dirección</label>
-                </div>
-                <br>
-                <br>
-                <select class="custom-select" aria-label="Default select example" formControlName="localidad"
-                    (change)="updatePostalCode($event)">
-                    <option selected>Seleccione una localidad</option>
-                    <option *ngFor="let localidad of localidades" [value]="localidad.localidad">{{ localidad.localidad
-                        }}</option>
-                </select>
-                <br>
-                <br>
-                <div class="group">
-                    <input formControlName="codigoPostal" id="codigoPostal" required type="text" class="input"
-                        [disabled]="true">
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Código Postal</label>
-                </div>
-                <br>
-                <br>
-                <div class="group">
-                    <input formControlName="telefono" id="telefono" required="" type="text" class="input">
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>telefono</label>
-                </div>
-                <br>
-                <br>
-                <br>
-                <div class="checkbox-container">
-                    <div class="checkbox-wrapper-31">
-                        <input type="checkbox" formControlName="emailNotifications" (change)="toggleEmailInput()">
-                        <svg viewBox="0 0 35.6 35.6">
-                            <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
-                            <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
-                            <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
-                        </svg>
-                    </div>
-                    <span>
-                        <FONT color="#42752a">&nbsp;&nbsp;Quiero Recibir notificaciones del EPRE en mi
-                           correo: </FONT>
-                    </span>
-                </div>
-                <br>
-                <form class="subscribe-form" *ngIf="isChecked">
-                    <input class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email"
-                        style="color: black;" [disabled]="!formularioReclamo.get('emailNotifications')?.value">
-                </form>
-                <br><br>
 
-                <br>
-                <br>
+            <br><br>
 
+
+
+           
+
+
+            <br><br><br><br><br>
+            <br>
+            <br>
+
+            <br>
+            <br>
+            <div class="group">
+                <input formControlName="telefono" id="telefono" required="" type="text" class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>telefono</label>
+            </div>
+            <br>
+            <br>
+            <br>
+            <div class="checkbox-container">
+                <div class="checkbox-wrapper-31">
+                    <input type="checkbox" formControlName="emailNotifications" (change)="toggleEmailInput()">
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+                <span>
+                    <FONT color="#42752a">&nbsp;&nbsp;Quiero Recibir notificaciones del EPRE en mi
+                        correo: </FONT>
+                </span>
+            </div>
+            <br>
+            <form class="subscribe-form" *ngIf="isChecked2">
+                <input class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email"
+                    style="color: black;" [disabled]="!formularioReclamo.get('emailNotifications')?.value">
             </form>
+            <br><br>
+
+            <br>
+            <br>
+
+
         </div>
         <div class="w-full md:w-2">
             <p-divider layout="vertical" styleClass="hidden md:flex"><b>
@@ -135,16 +205,47 @@
 
 
 
-    <app-resarcimiento></app-resarcimiento>
+        <app-resarcimiento></app-resarcimiento>
 
-    <app-file-upload></app-file-upload>
-
-
-    <br><br>
+        <app-file-upload></app-file-upload>
 
 
-    <button class="button" type="submit" label="Submit">Enviar</button>
-    <br><br><br>
-    <hr>
+        <br><br>
 
+
+        <button class="button" type="submit" label="Submit">Enviar</button>
+        <br><br><br>
+        <hr>
+        <br>
+        <h3>Localidad Alternativa1</h3>
+        <input type="text" formControlName="localidadAlternativa">
+        <br><br>
+        <h3>Codigo Postal Alternativo1</h3>
+        <input formControlName="codigoPostalAlternativo" id="codigoPostalAlternativo" type="text" class="input">
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Código Postal Alternativo</label>
+
+        <hr><br><br><br>
+        <h3>Localidad Alternativa2</h3>
+        <select class="custom-select" aria-label="Default select example" formControlName="localidad2"
+            (change)="updatePostalCodeAlternativo($event)">
+            <option selected>Seleccione una localidad</option>
+            <option *ngFor="let localidad2 of localidadesAlternativas2" [value]="localidad2.localidad2">{{
+                localidad2.localidad2
+                }}</option>
+        </select>
+        <br><br>
+        <h3>Codigo Postal Alternativo2</h3>
+        <div class="group">
+            <input formControlName="codigoPostal2" id="codigoPostal2" required type="text" class="input"
+                [disabled]="true">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Código Postal</label>
+        </div>
+
+
+
+    </form>
 </div>

@@ -19,7 +19,7 @@ import { ToastModule } from 'primeng/toast';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 
-
+import {MatDividerModule} from '@angular/material/divider'; 
 
 @NgModule({
   declarations: [
@@ -42,7 +42,8 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     BrowserAnimationsModule,
     MatDialogModule,
     ToastModule,
-    FileUploadModule
+    FileUploadModule,
+    MatDividerModule
     
   ],
   providers: [],
