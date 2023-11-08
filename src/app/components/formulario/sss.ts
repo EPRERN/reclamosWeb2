@@ -1,3 +1,31 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 localidadA2:any[] = [
     { localidad2: 'AGUADA CECILIO', codigoPostal2: '8534' },
     { localidad2: 'AGUADA DE CORDOBA', codigoPostal2: '8332' },

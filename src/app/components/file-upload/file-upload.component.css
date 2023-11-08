@@ -1,0 +1,164 @@
+.btn {
+    width: 6em;
+    height: 2em;
+    margin: 0.5em;
+    background: #69b545;
+    color: white;
+    border: none;
+    border-radius: 0.625em;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+   }
+   
+   button:hover {
+    color: #69b545;
+   }
+   
+   button:after {
+    content: "";
+    background: white;
+    position: absolute;
+    z-index: -1;
+    left: -20%;
+    right: -20%;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-45deg) scale(0, 1);
+    transition: all 0.5s;
+   }
+   
+   button:hover:after {
+    transform: skewX(-45deg) scale(1, 1);
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+   }
+
+
+
+.myButton {
+    width: 100px; /* Reducir el ancho del botón */
+    height: 30px; /* Reducir la altura del botón */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: red;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    background: #e62222;
+  }
+  
+  .myButton,
+  .myButton span {
+    transition: 200ms;
+  }
+  
+  .myButton .text {
+    transform: translateX(20px); /* Ajustar el espacio de texto a la izquierda */
+    color: white;
+    font-weight: bold;
+    font-size: 12px; /* Ajustar el tamaño de la fuente */
+  }
+  
+  .myButton .icon {
+    position: absolute;
+    border-left: 1px solid #c41b1b;
+    transform: translateX(70px); /* Ajustar la posición del icono */
+    height: 20px; /* Reducir la altura del icono */
+    width: 20px; /* Reducir el ancho del icono */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .myButton svg {
+    width: 10px; /* Reducir el tamaño del icono */
+    fill: #eee;
+  }
+  
+  .myButton:hover {
+    background: #ff3636;
+  }
+  
+  .myButton:hover .text {
+    color: transparent;
+  }
+  
+  .myButton:hover .icon {
+    width: 100px; /* Reducir el ancho del icono en el estado de hover */
+    border-left: none;
+    transform: translateX(0);
+  }
+  
+  .myButton:focus {
+    outline: none;
+  }
+  
+  .myButton:active .icon svg {
+    transform: scale(0.8);
+  }
+  
+
+.button {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    margin-left: 100px;
+    align-items: center;
+    border: 1px solid #34974d;
+    background-color: #3aa856;
+    margin-top: 20px; /* Ajusta el margen según sea necesario */
+  }
+  
+  .button, .button__icon, .button__text {
+    transition: all 0.3s;
+  }
+  
+  .button .button__text {
+    transform: translateX(30px);
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .button .button__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: #34974d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button .svg {
+    width: 30px;
+    stroke: #fff;
+  }
+  
+  .button:hover {
+    background: #34974d;
+  }
+  
+  .button:hover .button__text {
+    color: transparent;
+  }
+  
+  .button:hover .button__icon {
+    width: 148px;
+    transform: translateX(0);
+  }
+  
+  .button:active .button__icon {
+    background-color: #2e8644;
+  }
+  
+  .button:active {
+    border: 1px solid #2e8644;
+  }

@@ -116,12 +116,41 @@
             <br><br>
             <div class="group">
                 <p class="customP">Código Postal:</p>
-                <input formControlName="codigoPostal" id="codigoPostal" required type="text" class="input"
-                readonly>
+                <input formControlName="codigoPostal" id="codigoPostal" required type="text" class="input" readonly>
                 <span class="highlight"></span>
                 <span class="bar"></span>
             </div>
-<br><br>
+            <br><br>
+            <div class="group">
+                <input formControlName="nis" id="nis" required="" type="text" class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Número de NIS (usuarios EdERSA)</label>
+            </div>
+            <br><br>
+            <div class="group">
+                <input formControlName="numeroDeCliente" id="numeroDeCliente" required="" type="text" class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Número de Cliente (usuarios EdERSA)</label>
+            </div><br><br>
+        </div>
+
+        <div class="w-full md:w-2">
+            <p-divider layout="vertical" styleClass="hidden md:flex"><b>
+                    <FONT size="7" color="#6cbe45">↓</FONT>
+                </b></p-divider>
+        </div>
+
+
+
+        <div class="custom-card">
+            <p-divider></p-divider>
+            <h1 class="myHeader">
+                <FONT size="6">Información de Contacto</FONT>
+            </h1>
+            <p-divider></p-divider>
+            <br><br>
             <div class="checkbox-container">
                 <span>
                     <FONT color="#42752a">Coincide con la Dirección de Suministro: &nbsp;</FONT>
@@ -136,38 +165,41 @@
                     </svg>
                 </div>
             </div>
-
-        </div>
-
-
-
-        <div class="custom-card">
-            <h2 class="myHeader">Datos Suministro</h2>
-            <p-divider></p-divider>
-
-
             <br><br>
-
-
-
-           
-
-
-            <br><br><br><br><br>
-            <br>
-            <br>
-
-            <br>
-            <br>
             <div class="group">
-                <input formControlName="telefono" id="telefono" required="" type="text" class="input">
+                <input formControlName="direccionAlternativa" id="direccionAlternativa" required="" type="text"
+                    class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>telefono</label>
+                <label>Ingrese su Dirección</label>
             </div>
-            <br>
-            <br>
-            <br>
+            <br><br>
+            <div class="group">
+                <input formControlName="localidadAlternativa" id="localidadAlternativa" required="" type="text"
+                    class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Localidad:</label>
+            </div>
+            <br><br>
+            <div class="group">
+                <input formControlName="codigoPostalAlternativo" id="codigoPostalAlternativo" required="" type="text"
+                    class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Código Postal:</label>
+            </div>
+            <br><br>
+            <div class="group">
+                <input formControlName="telefono" id="telefono" required="" type="text"
+                    class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Teléfono:</label>
+            </div>
+            
+            <br><br>
+            <p-divider></p-divider>
             <div class="checkbox-container">
                 <div class="checkbox-wrapper-31">
                     <input type="checkbox" formControlName="emailNotifications" (change)="toggleEmailInput()">
@@ -182,70 +214,43 @@
                         correo: </FONT>
                 </span>
             </div>
-            <br>
+            <br><br>
             <form class="subscribe-form" *ngIf="isChecked2">
                 <input class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email"
                     style="color: black;" [disabled]="!formularioReclamo.get('emailNotifications')?.value">
             </form>
+            <p-divider></p-divider>
             <br><br>
-
-            <br>
-            <br>
-
-
         </div>
+        
         <div class="w-full md:w-2">
             <p-divider layout="vertical" styleClass="hidden md:flex"><b>
-                    <FONT size="5" color="#6cbe45">↓</FONT>
+                    <FONT size="7" color="#6cbe45">↓</FONT>
                 </b></p-divider>
-
         </div>
-
-
-
-
-
         <app-resarcimiento></app-resarcimiento>
 
-        <app-file-upload></app-file-upload>
-
-
-        <br><br>
-
-
-        <button class="button" type="submit" label="Submit">Enviar</button>
-        <br><br><br>
-        <hr>
-        <br>
-        <h3>Localidad Alternativa1</h3>
-        <input type="text" formControlName="localidadAlternativa">
-        <br><br>
-        <h3>Codigo Postal Alternativo1</h3>
-        <input formControlName="codigoPostalAlternativo" id="codigoPostalAlternativo" type="text" class="input">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Código Postal Alternativo</label>
-
-        <hr><br><br><br>
-        <h3>Localidad Alternativa2</h3>
-        <select class="custom-select" aria-label="Default select example" formControlName="localidad2"
-            (change)="updatePostalCodeAlternativo($event)">
-            <option selected>Seleccione una localidad</option>
-            <option *ngFor="let localidad2 of localidadesAlternativas2" [value]="localidad2.localidad2">{{
-                localidad2.localidad2
-                }}</option>
-        </select>
-        <br><br>
-        <h3>Codigo Postal Alternativo2</h3>
-        <div class="group">
-            <input formControlName="codigoPostal2" id="codigoPostal2" required type="text" class="input"
-                [disabled]="true">
-            <span class="highlight"></span>
-            <span class="bar"></span>
-            <label>Código Postal</label>
+        
+        <div class="w-full md:w-2">
+            <p-divider layout="vertical" styleClass="hidden md:flex"><b>
+                    <FONT size="7" color="#6cbe45">↓</FONT>
+                </b></p-divider>
         </div>
 
 
 
-    </form>
-</div>
+
+
+        <div class="custom-card">
+            <p-divider></p-divider>
+            <h1 class="myHeader">
+                <FONT size="6">Subir Adjuntos</FONT>
+            </h1>
+            <p-divider></p-divider>
+            
+            <app-file-upload></app-file-upload>
+        </div>
+        <br><br>
+        <button class="button" (click)="onsubmit()" type="submit" label="Submit">Enviar</button>
+        <br><br><br>
+     

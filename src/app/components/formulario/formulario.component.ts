@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { EmailService } from 'src/app/services/email.service';
 
 @Component({
   selector: 'app-formulario',
@@ -11,8 +12,9 @@ export class FormularioComponent implements OnInit {
   @Input() isDisabled: boolean = false;
   formularioReclamo!: FormGroup;
   formularios: any;
+  files: File[] = [];
 
-  constructor(public fb: FormBuilder) { }
+  constructor(public fb: FormBuilder, private emailService: EmailService) { }
 
   localidades: any[] = [
     { localidad: 'AGUADA CECILIO', codigoPostal: '8534' },
@@ -982,12 +984,14 @@ export class FormularioComponent implements OnInit {
       codigoPostal: [''],
      
       direccionAlternativa: [''], 
-      localidadAlternativa: [''],/////SE TUVO QUE USAR UN INPUT COMUN PQ EL SELECT NO FUNCIONA X ESO TUVE Q DEFINIR 3 ATRIBUTOS PARA localidades, 1 sirve de contenedor  y 2 son alternativos 
+      localidadAlternativa: [''],
       codigoPostalAlternativo: [''],
 
       localidad2:[''],
       codigoPostal2:[''],
       
+      nis:[''],
+      numeroDeCliente:[''],
 
       email: [''],
       errorFacturacion: [false],
@@ -1025,6 +1029,14 @@ export class FormularioComponent implements OnInit {
       this.formularioReclamo.get('codigoPostalAlternativo')?.setValue('');
     }
   }
+  copiarDireccion(){
+    const direccionValue = this.formularioReclamo.get('direccion')?.value;
+    if(this.isChecked && direccionValue){
+      this.formularioReclamo.get('direccionAlternativa')?.setValue(direccionValue);
+    }else{
+      this.formularioReclamo.get('direccionAlternativa')?.setValue('');
+    }
+  }
 
 
 
@@ -1034,6 +1046,7 @@ export class FormularioComponent implements OnInit {
     this.isChecked = event.target.checked;
     this.copiarLocalidad(event);
     this.copiarCodigoPostal();
+    this.copiarDireccion();
   }
 
 
@@ -1050,13 +1063,22 @@ export class FormularioComponent implements OnInit {
 
 
   onsubmit() {
-    // Aquí irá la lógica para manejar el envío del formulario
-    // Puedes acceder a los valores del formulario usando this.formularioReclamo.value
-    // Por ejemplo:
-    const formValues = this.formularioReclamo.value;
-    // console.log(formValues);
+    const formData = this.formularioReclamo.getRawValue(); // Obtén los datos del formulario
+    this.emailService.sendEmailWithAttachment(formData, this.files).subscribe(
+      (response) => {
+        console.log('Correo electrónico enviado exitosamente', response);
+      },
+      (error) => {
+        console.error('Fallo al enviar el correo electrónico', error);
+      }
+    );
   }
-
+  onFileSelected(event: any) {
+    const files: File[] = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+      this.files.push(files[i]);
+    }
+  }
 
 
 }
