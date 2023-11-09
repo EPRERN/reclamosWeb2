@@ -6,18 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EmailService {
+  private readonly baseUrl = 'http://localhost:3000/send-email'; // Cambia esta URL por la URL de tu servidor
 
-  private baseUrl = 'http://localhost:8080/email/send';
+  constructor(private http: HttpClient) {}
 
-  
-  constructor(private http: HttpClient) { }
-
-  sendEmailWithAttachment(emailData: any, files: File[]): Observable<any> {
-    const formData = new FormData();
-    formData.append('emailRequest', JSON.stringify(emailData));
-    for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
-    }
+  sendEmailWithAttachment(formData: FormData): Observable<any> {
     return this.http.post(this.baseUrl, formData);
   }
 }

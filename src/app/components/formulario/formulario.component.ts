@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmailService } from 'src/app/services/email.service';
@@ -12,9 +13,14 @@ export class FormularioComponent implements OnInit {
   @Input() isDisabled: boolean = false;
   formularioReclamo!: FormGroup;
   formularios: any;
-  files: File[] = [];
 
-  constructor(public fb: FormBuilder, private emailService: EmailService) { }
+  files: File[] = [];
+  maxSize: number = 10 * 1024 * 1024; // 10 MB en bytes
+  errorMessage: string = '';
+  isButtonDisabled: boolean = false;
+
+  constructor(public fb: FormBuilder, private emailService: EmailService,
+              ) { }
 
   localidades: any[] = [
     { localidad: 'AGUADA CECILIO', codigoPostal: '8534' },
@@ -987,8 +993,8 @@ export class FormularioComponent implements OnInit {
       localidadAlternativa: [''],
       codigoPostalAlternativo: [''],
 
-      localidad2:[''],
-      codigoPostal2:[''],
+      // localidad2:[''],
+      // codigoPostal2:[''],
       
       nis:[''],
       numeroDeCliente:[''],
@@ -1063,22 +1069,55 @@ export class FormularioComponent implements OnInit {
 
 
   onsubmit() {
-    const formData = this.formularioReclamo.getRawValue(); // Obtén los datos del formulario
-    this.emailService.sendEmailWithAttachment(formData, this.files).subscribe(
+    for (let i = 0; i < this.files.length; i++) {
+      if (this.files[i].size > this.maxSize) {
+        this.errorMessage =
+          'El tamaño del archivo excede el límite permitido de 10MB. No se puede enviar el formulario.';
+        this.isButtonDisabled = true;
+        return;
+      }
+    }
+
+    const formData = new FormData();
+    Object.keys(this.formularioReclamo.value).forEach((key) => {
+      formData.append(key, this.formularioReclamo.value[key]);
+    });
+
+    this.files.forEach((file, index) => {
+      formData.append('files', file, file.name);
+    });
+
+    this.emailService.sendEmailWithAttachment(formData).subscribe(
       (response) => {
-        console.log('Correo electrónico enviado exitosamente', response);
+        console.log('Correo electrónico enviado con éxito', response);
       },
       (error) => {
-        console.error('Fallo al enviar el correo electrónico', error);
+        console.error('Error al enviar el correo electrónico:', error);
       }
     );
   }
+
+
+
+
+
+
+
+
+
   onFileSelected(event: any) {
     const files: File[] = event.target.files;
     for (let i = 0; i < files.length; i++) {
       this.files.push(files[i]);
     }
   }
+
+
+
+
+
+
+
 
 
 }
