@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmailService } from 'src/app/services/email.service';
+import Swal from 'sweetalert2';
+
+
+
 
 @Component({
   selector: 'app-formulario',
@@ -13,14 +17,15 @@ export class FormularioComponent implements OnInit {
   @Input() isDisabled: boolean = false;
   formularioReclamo!: FormGroup;
   formularios: any;
-
   files: File[] = [];
-  maxSize: number = 10 * 1024 * 1024; // 10 MB en bytes
+
+
+
   errorMessage: string = '';
   isButtonDisabled: boolean = false;
 
   constructor(public fb: FormBuilder, private emailService: EmailService,
-              ) { }
+  ) { }
 
   localidades: any[] = [
     { localidad: 'AGUADA CECILIO', codigoPostal: '8534' },
@@ -479,463 +484,7 @@ export class FormularioComponent implements OnInit {
     { localidad: 'ZANJON DE OYUELA', codigoPostal: '8501' },
 
   ];
-  localidadesAlternativas2:any[] = [
-    { localidad2: 'AGUADA CECILIO', codigoPostal2: '8534' },
-    { localidad2: 'AGUADA DE CORDOBA', codigoPostal2: '8332' },
-    { localidad2: 'AGUADA DE GUANACO', codigoPostal2: '8418' },
-    { localidad2: 'AGUADA DE GUERRA', codigoPostal2: '8424' },
-    { localidad2: 'AGUADA DEL LORO', codigoPostal2: '8520' },
-    { localidad2: 'AGUADA DE LOS PAJARITOS', codigoPostal2: '8301' },
-    { localidad2: 'AGUADA DE PIEDRA', codigoPostal2: '8422' },
-    { localidad2: 'AGUADA ESCONDIDA', codigoPostal2: '8418' },
-    { localidad2: 'AGUADA GUZMAN', codigoPostal2: '8333' },
-    { localidad2: 'AGUADA TRONCOSO (EMBARCADERO FCGR)', codigoPostal2: '8415' },
-    { localidad2: 'AGUA DEL CERRO', codigoPostal2: '8415' },
-    { localidad2: 'AGUARA', codigoPostal2: '8307' },
-    { localidad2: 'ALANITOS', codigoPostal2: '8333' },
-    { localidad2: 'ALEJANDRO STEFENELLI', codigoPostal2: '8332' },
-    { localidad2: 'ALLEN', codigoPostal2: '8328' },
-    { localidad2: 'ANECON CHICO', codigoPostal2: '8418' },
-    { localidad2: 'ANECON GRANDE', codigoPostal2: '8416' },
-    { localidad2: 'ANTIGUO GENERAL ROCA', codigoPostal2: '8332' },
-    { localidad2: 'ARROYO BLANCO', codigoPostal2: '8403' },
-    { localidad2: 'ARROYO CHACAY', codigoPostal2: '8401' },
-    { localidad2: 'ARROYO DE LA VENTANA', codigoPostal2: '8521' },
-    { localidad2: 'ARROYO LAS MINAS', codigoPostal2: '8415' },
-    { localidad2: 'ARROYO LOS BERROS', codigoPostal2: '8521' },
-    { localidad2: 'ARROYO MARTIN (ÑORQUINCO, DPTO. ÑORQUINCO)', codigoPostal2: '8415' },
-    { localidad2: 'ARROYO MARTIN (MAQUINCHAO, DPTO. 25 DE MAYO)', codigoPostal2: '8422' },
-    { localidad2: 'ARROYO SALADO', codigoPostal2: '8532' },
-    { localidad2: 'ARROYO TEMBRADO', codigoPostal2: '8521' },
-    { localidad2: 'ARROYO VERDE', codigoPostal2: '8521' },
-    { localidad2: 'ATRAICO', codigoPostal2: '8418' },
-    { localidad2: 'BAHIA LOPEZ', codigoPostal2: '8400' },
-    { localidad2: 'BAJO PICASO', codigoPostal2: '8536' },
-    { localidad2: 'BAJO RICO', codigoPostal2: '8360' },
-    { localidad2: 'BALNEARIO EL CONDOR', codigoPostal2: '8501' },
-    { localidad2: 'BALNEARIO LA BOCA', codigoPostal2: '8501' },
-    { localidad2: 'BALNEARIO LAS GRUTAS', codigoPostal2: '8521' },
-    { localidad2: 'BALNEARIO MASSINI', codigoPostal2: '8500' },
-    { localidad2: 'BARDA COLORADA', codigoPostal2: '8333' },
-    { localidad2: 'BARDA CHICA', codigoPostal2: '8324' },
-    { localidad2: 'BARDA DEL MEDIO', codigoPostal2: '8305' },
-    { localidad2: 'BARILOCHE', codigoPostal2: '8400' },
-    { localidad2: 'BARRIL NIYEO', codigoPostal2: '8422' },
-    { localidad2: 'BARRIO DON BOSCO', codigoPostal2: '8336' },
-    { localidad2: 'BARRIO LAGUNA', codigoPostal2: '8520' },
-    { localidad2: 'BARRIO LAS QUINTAS', codigoPostal2: '8400' },
-    { localidad2: 'BARRIO MATADEROS', codigoPostal2: '8336' },
-    { localidad2: 'BARRIO NIRECO', codigoPostal2: '8400' },
-    { localidad2: 'BARRIO NORTE', codigoPostal2: '8328' },
-    { localidad2: 'BARRIO TRESCIENTAS VIVIENDAS', codigoPostal2: '8324' },
-    { localidad2: 'BENJAMIN ZORRILLA', codigoPostal2: '8360' },
-    { localidad2: 'BLANCA CHICA', codigoPostal2: '8422' },
-    { localidad2: 'BLANCA LOMA', codigoPostal2: '8332' },
-    { localidad2: 'BOCA DE LA TRAVESIA', codigoPostal2: '8505' },
-    { localidad2: 'BUENA PARADA', codigoPostal2: '8138' },
-    { localidad2: 'BUENZANIYEU', codigoPostal2: '8424' },
-    { localidad2: 'CAIN', codigoPostal2: '8332' },
-    { localidad2: 'CALTRAUNA', codigoPostal2: '8424' },
-    { localidad2: 'CAMPAMENTO', codigoPostal2: '8332' },
-    { localidad2: 'CAÑADA GRANDE', codigoPostal2: '8424' },
-    { localidad2: 'CAÑADON COMALLO', codigoPostal2: '8416' },
-    { localidad2: 'CAÑADON CHILENO', codigoPostal2: '8417' },
-    { localidad2: 'CAÑADON DEL CORRAL', codigoPostal2: '8412' },
-    { localidad2: 'CAÑADON DE LOS SAUCES', codigoPostal2: '8363' },
-    { localidad2: 'CAÑADON TRINCAO', codigoPostal2: '8332' },
-    { localidad2: 'CARHUE', codigoPostal2: '8412' },
-    { localidad2: 'CARRILAUQUEN', codigoPostal2: '8418' },
-    { localidad2: 'CARRI YEGUA', codigoPostal2: '8417' },
-    { localidad2: 'CASA QUEMADA', codigoPostal2: '8412' },
-    { localidad2: 'CATRIEL', codigoPostal2: '8307' },
-    { localidad2: 'CERRO ABANICO (APEADERO FCGR)', codigoPostal2: '8424' },
-    { localidad2: 'CERRO ALTO', codigoPostal2: '8403' },
-    { localidad2: 'CERRO BARAJA', codigoPostal2: '8505' },
-    { localidad2: 'CERRO CATEDRAL', codigoPostal2: '8401' },
-    { localidad2: 'CERRO DAVID', codigoPostal2: '8412' },
-    { localidad2: 'CERRO DE LA POLICIA', codigoPostal2: '8333' },
-    { localidad2: 'CERRO DE LOS VIEJOS', codigoPostal2: '8138' },
-    { localidad2: 'CERRO DE POLICIA', codigoPostal2: '8333' },
-    { localidad2: 'CERRO FRANCISCO', codigoPostal2: '8505' },
-    { localidad2: 'CERRO GALENSE', codigoPostal2: '8363' },
-    { localidad2: 'CERRO MESA', codigoPostal2: '8415' },
-    { localidad2: 'CERVANTES', codigoPostal2: '8326' },
-    { localidad2: 'CINCO CHAÑARES', codigoPostal2: '8520' },
-    { localidad2: 'CINCO LAGUNAS', codigoPostal2: '8138' },
-    { localidad2: 'CINCO SALTOS', codigoPostal2: '8303' },
-    { localidad2: 'CIPOLLETTI', codigoPostal2: '8324' },
-    { localidad2: 'CLEMENTE ONELLI', codigoPostal2: '8416' },
-    { localidad2: 'COLINIYEN', codigoPostal2: '8332' },
-    { localidad2: 'COLI TORO', codigoPostal2: '8418' },
-    { localidad2: 'COLONIA ALMIRANTE GUERRICO', codigoPostal2: '8307' },
-    { localidad2: 'COLONIA CATRIEL', codigoPostal2: '8307' },
-    { localidad2: 'COLONIA CHILAVERT', codigoPostal2: '8532' },
-    { localidad2: 'COLONIA EL MANZANO', codigoPostal2: '8305' },
-    { localidad2: 'COLONIA GRAL. FRIAS', codigoPostal2: '8501' },
-    { localidad2: 'COLONIA JOSEFA', codigoPostal2: '8363' },
-    { localidad2: 'COLONIA JULIA y ECHARREN', codigoPostal2: '8138' },
-    { localidad2: 'COLONIA LA LUISA', codigoPostal2: '8503' },
-    { localidad2: 'COLONIA LOS CANALES', codigoPostal2: '8316' },
-    { localidad2: 'COLONIA REGINA', codigoPostal2: '8336' },
-    { localidad2: 'COLONIA RUSA', codigoPostal2: '8332' },
-    { localidad2: 'COLONIA SAN JUAN', codigoPostal2: '8503' },
-    { localidad2: 'COLONIA SUIZA', codigoPostal2: '8400' },
-    { localidad2: 'COMALLO', codigoPostal2: '8416' },
-    { localidad2: 'COMALLO ABAJO', codigoPostal2: '8416' },
-    { localidad2: 'COMI-C', codigoPostal2: '8424' },
-    { localidad2: 'CONA NIYEU', codigoPostal2: '8521' },
-    { localidad2: 'CONTRALMIRANTE CORDERO', codigoPostal2: '8301' },
-    { localidad2: 'CONTRALMIRANTE MARTIN GUERRICO', codigoPostal2: '8328' },
-    { localidad2: 'COQUELEN', codigoPostal2: '8416' },
-    { localidad2: 'CORONEL BELISLE', codigoPostal2: '8364' },
-    { localidad2: 'CORONEL EUGENIO DEL BUSTO', codigoPostal2: '8138' },
-    { localidad2: 'CORONEL FRANCISCO SOSA (EMBARCADRO FCGR)', codigoPostal2: '8503' },
-    { localidad2: 'CORONEL JUAN JOSE GOMEZ', codigoPostal2: '8333' },
-    { localidad2: 'CORONEL VIDAL', codigoPostal2: '8305' },
-    { localidad2: 'CORRAL CHICO', codigoPostal2: '8534' },
-    { localidad2: 'CORRAL DE LOS PINOS', codigoPostal2: '8412' },
-    { localidad2: 'CORRALITO', codigoPostal2: '8403' },
-    { localidad2: 'COSTA DEL RIO AZUL', codigoPostal2: '8430' },
-    { localidad2: 'COSTAS DEL PICHI LEUFU', codigoPostal2: '8412' },
-    { localidad2: 'COS ZAURES', codigoPostal2: '8307' },
-    { localidad2: 'COYUE CO', codigoPostal2: '8333' },
-    { localidad2: 'CUATRO ESQUINAS', codigoPostal2: '8324' },
-    { localidad2: 'CUBANEA', codigoPostal2: '8501' },
-    { localidad2: 'CUENCA VIDAL', codigoPostal2: '8301' },
-    { localidad2: 'CURA LAUQUEN', codigoPostal2: '8417' },
-    { localidad2: 'CUYEN-LEUFU', codigoPostal2: '8534' },
-    { localidad2: 'CHACALHUA RUCA', codigoPostal2: '8415' },
-    { localidad2: 'CHACAY HUARRUCA', codigoPostal2: '8415' },
-    { localidad2: 'CHACOY (BRACA)', codigoPostal2: '8415' },
-    { localidad2: 'CHACRAS DE ALLEN', codigoPostal2: '8328' },
-    { localidad2: 'CHAIFUL', codigoPostal2: '8418' },
-    { localidad2: 'CHASICO', codigoPostal2: '8417' },
-    { localidad2: 'CHAUQUEN', codigoPostal2: '8536' },
-    { localidad2: 'CHELFORO', codigoPostal2: '8366' },
-    { localidad2: 'CHENQUENIYEU', codigoPostal2: '8412' },
-    { localidad2: 'CHICHIHUAO', codigoPostal2: '8422' },
-    { localidad2: 'CHICHINALES', codigoPostal2: '8326' },
-    { localidad2: 'CHIMPAY', codigoPostal2: '8364' },
-    { localidad2: 'CHINA MUERTA', codigoPostal2: '8504' },
-    { localidad2: 'CHINQUENIYEU', codigoPostal2: '8412' },
-    { localidad2: 'CHIPAUQUIL', codigoPostal2: '8536' },
-    { localidad2: 'CHOCORI', codigoPostal2: '8503' },
-    { localidad2: 'CHOELE CHOEL', codigoPostal2: '8360' },
-    { localidad2: 'CHURQUIÑEO', codigoPostal2: '8412' },
-    { localidad2: 'DARWIN', codigoPostal2: '8364' },
-    { localidad2: 'DOCTOR ROGELIO CORTIZO (EMPALME)', codigoPostal2: '8520' },
-    { localidad2: 'DON GUILLERMO', codigoPostal2: '8418' },
-    { localidad2: 'EL AGUILA', codigoPostal2: '8138' },
-    { localidad2: 'EL BOLSON', codigoPostal2: '8430' },
-    { localidad2: 'EL CACIQUE', codigoPostal2: '8417' },
-    { localidad2: 'EL CAIN', codigoPostal2: '8422' },
-    { localidad2: 'EL CALDEN', codigoPostal2: '8138' },
-    { localidad2: 'EL CAMARURO', codigoPostal2: '8417' },
-    { localidad2: 'EL CUY', codigoPostal2: '8333' },
-    { localidad2: 'EL CHEIFUL', codigoPostal2: '8418' },
-    { localidad2: 'EL DIQUE', codigoPostal2: '8500' },
-    { localidad2: 'EL FOYEL', codigoPostal2: '8401' },
-    { localidad2: 'EL GAUCHO POBRE', codigoPostal2: '8417' },
-    { localidad2: 'EL HINOJO', codigoPostal2: '8364' },
-    { localidad2: 'EL JARDINERO', codigoPostal2: '8417' },
-    { localidad2: 'EL MANSO', codigoPostal2: '8430' },
-    { localidad2: 'EL MANZANO', codigoPostal2: '8328' },
-    { localidad2: 'EL MIRADOR', codigoPostal2: '8418' },
-    { localidad2: 'EL MOLIGUE', codigoPostal2: '8418' },
-    { localidad2: 'EL MOLINO', codigoPostal2: '8364' },
-    { localidad2: 'EL MONTOSO', codigoPostal2: '8418' },
-    { localidad2: 'EL PANTANOSO', codigoPostal2: '8412' },
-    { localidad2: 'EL SALADO', codigoPostal2: '8536' },
-    { localidad2: 'EL TREBOL', codigoPostal2: '8138' },
-    { localidad2: 'EMPALME DOCTOR ROGELIO CORTISO', codigoPostal2: '8520' },
-    { localidad2: 'EMPALME KILOMETRO 648 (APEADERO FCGR)', codigoPostal2: '8418' },
-    { localidad2: 'ESTANCIA EL CONDOR', codigoPostal2: '8400' },
-    { localidad2: 'ESTANCIA LAS JULIAS', codigoPostal2: '8363' },
-    { localidad2: 'FALCKNER', codigoPostal2: '8534' },
-    { localidad2: 'FERRI', codigoPostal2: '8301' },
-    { localidad2: 'FITALANCAO (EMBARCADERO FCGR)', codigoPostal2: '8415' },
-    { localidad2: 'FITAMICHE', codigoPostal2: '8415' },
-    { localidad2: 'FITATIMEN', codigoPostal2: '8415' },
-    { localidad2: 'FORTIN UNO', codigoPostal2: '8360' },
-    { localidad2: 'FUERTE GENERAL ROCA', codigoPostal2: '8332' },
-    { localidad2: 'FUERTE RUIN (EMBARCADERO FCGR)', codigoPostal2: '8418' },
-    { localidad2: 'GARZU LAUQUEN (APEADERO FCGR)', codigoPostal2: '8424' },
-    { localidad2: 'GARRAS', codigoPostal2: '8324' },
-    { localidad2: 'GENERAL CONESA', codigoPostal2: '8503' },
-    { localidad2: 'GENERAL ENRIQUE GODOY', codigoPostal2: '8336' },
-    { localidad2: 'GENERAL FERNANDEZ ORO', codigoPostal2: '8324' },
-    { localidad2: 'GENERAL LIBORIO BERNAL', codigoPostal2: '8500' },
-    { localidad2: 'GENERAL LORENZO VINTTER', codigoPostal2: '8514' },
-    { localidad2: 'GENERAL NICOLAS H. PALACIOS', codigoPostal2: '8514' },
-    { localidad2: 'GENERAL ROCA', codigoPostal2: '8332' },
-    { localidad2: 'GUARDIA MITRE', codigoPostal2: '8505' },
-    { localidad2: 'HOTEL BAHIA LOPEZ', codigoPostal2: '8400' },
-    { localidad2: 'HOTEL EL TREBOL', codigoPostal2: '8409' },
-    { localidad2: 'HOTEL ENTRE LAGOS', codigoPostal2: '8409' },
-    { localidad2: 'HOTEL LOS COIHUES', codigoPostal2: '8400' },
-    { localidad2: 'HUA-MICHE', codigoPostal2: '8417' },
-    { localidad2: 'HUAN LUAN', codigoPostal2: '8418' },
-    { localidad2: 'HURRACA (CHACAY)', codigoPostal2: '8415' },
-    { localidad2: 'INGENIERO HUERGO', codigoPostal2: '8334' },
-    { localidad2: 'INGENIERO JACOBACCI', codigoPostal2: '8418' },
-    { localidad2: 'INGENIERO JULIAN ROMERO', codigoPostal2: '8336' },
-    { localidad2: 'INGENIERO OTTO KRAUSE', codigoPostal2: '8336' },
-    { localidad2: 'INGENIERO ZIMMERMANN RESTA (APEADERO FCGR)', codigoPostal2: '8416' },
-    { localidad2: 'INGENIO SAN LORENZO', codigoPostal2: '8503' },
-    { localidad2: 'ISLA CHICA', codigoPostal2: '8363' },
-    { localidad2: 'ISLA GRANDE', codigoPostal2: '8361' },
-    { localidad2: 'JAGUEL CAMPO MONTE', codigoPostal2: '8520' },
-    { localidad2: 'JANINUE', codigoPostal2: '8534' },
-    { localidad2: 'JITA RUSIA', codigoPostal2: '8417' },
-    { localidad2: 'JONES', codigoPostal2: '8506' },
-    { localidad2: 'JUAN DE GARAY', codigoPostal2: '8138' },
-    { localidad2: 'KILI MALAL', codigoPostal2: '8417' },
-    { localidad2: 'KILOMETRO 823', codigoPostal2: '8134' },
-    { localidad2: 'KILOMETRO 1071', codigoPostal2: '8336' },
-    { localidad2: 'KILOMETRO 1099', codigoPostal2: '8336' },
-    { localidad2: 'KILOMETRO 1218', codigoPostal2: '8305' },
-    { localidad2: 'LA ADELA', codigoPostal2: '8138' },
-    { localidad2: 'LA ALIANZA', codigoPostal2: '8324' },
-    { localidad2: 'LA AMISTAD', codigoPostal2: '9138' },
-    { localidad2: 'LA ANGOSTURA', codigoPostal2: '8417' },
-    { localidad2: 'LA BALSA', codigoPostal2: '8332' },
-    { localidad2: 'LA BOMBILLA', codigoPostal2: '8520' },
-    { localidad2: 'LA CAROLINA', codigoPostal2: '8503' },
-    { localidad2: 'LA COSTA', codigoPostal2: '8332' },
-    { localidad2: 'LA CRIOLLITA', codigoPostal2: '8417' },
-    { localidad2: 'LA CHILENA', codigoPostal2: '8417' },
-    { localidad2: 'LA ELVIRA', codigoPostal2: '8360' },
-    { localidad2: 'LA EMILIA', codigoPostal2: '8324' },
-    { localidad2: 'LA ESMERALDA (DARWIN, DPTO. AVELLANEDA)', codigoPostal2: '8364' },
-    { localidad2: 'LA ESMERALDA (CIPOLLETTI, DPTO. GRAL. ROCA)', codigoPostal2: '8324' },
-    { localidad2: 'LA ESPERANZA', codigoPostal2: '8534' },
-    { localidad2: 'LA ESTANCIA VIEJA', codigoPostal2: '8324' },
-    { localidad2: 'LA ESTRELLA', codigoPostal2: '8417' },
-    { localidad2: 'LA EXCURRA', codigoPostal2: '8417' },
-    { localidad2: 'LA FLECHA', codigoPostal2: '8503' },
-    { localidad2: 'LA GEROMITA', codigoPostal2: '8332' },
-    { localidad2: 'LAGO GUTIERREZ', codigoPostal2: '8400' },
-    { localidad2: 'LAGO MASCARDI', codigoPostal2: '8401' },
-    { localidad2: 'LAGO MORENO', codigoPostal2: '8400' },
-    { localidad2: 'LAGO PELLEGRINI', codigoPostal2: '8305' },
-    { localidad2: 'LA GRANJA', codigoPostal2: '8501' },
-    { localidad2: 'LAGUNA BLANCA', codigoPostal2: '8417' },
-    { localidad2: 'LAGUNA CORTES', codigoPostal2: '8520' },
-    { localidad2: 'LAGUNA DE LA PRUEBA', codigoPostal2: '8520' },
-    { localidad2: 'LAGUNA DEL BARRO', codigoPostal2: '8514' },
-    { localidad2: 'LAGUNA DEL CHASICO', codigoPostal2: '8138' },
-    { localidad2: 'LAGUNA DEL MONTE', codigoPostal2: '8514' },
-    { localidad2: 'LAGUNA FRIAS', codigoPostal2: '8411' },
-    { localidad2: 'LAGUNA GUANACO', codigoPostal2: '8422' },
-    { localidad2: 'LAGUNITA', codigoPostal2: '8424' },
-    { localidad2: 'LA JUANITA (DARWIN, DPTO. AVELLANEDA)', codigoPostal2: '8364' },
-    { localidad2: 'LA JUANITA (RIO COLORADO, DPTO. PICHI MAHUIDA)', codigoPostal2: '8138' },
-    { localidad2: 'LA JULIA', codigoPostal2: '8363' },
-    { localidad2: 'LA LUCINDA', codigoPostal2: '8324' },
-    { localidad2: 'LA LUNA', codigoPostal2: '8138' },
-    { localidad2: 'LA MARIA INES', codigoPostal2: '8138' },
-    { localidad2: 'LAMARQUE', codigoPostal2: '8363' },
-    { localidad2: 'LA MESETA', codigoPostal2: '8500' },
-    { localidad2: 'LA MIMOSA', codigoPostal2: '8417' },
-    { localidad2: 'LA MONTAÑESA', codigoPostal2: '8138' },
-    { localidad2: 'LANQUIÑEO', codigoPostal2: '8417' },
-    { localidad2: 'LA PAMPA', codigoPostal2: '8138' },
-    { localidad2: 'LA PICASA', codigoPostal2: '8303' },
-    { localidad2: 'LA PORTEÑA', codigoPostal2: '8417' },
-    { localidad2: 'LA PRIMAVERA', codigoPostal2: '8520' },
-    { localidad2: 'LA QUEBRADA', codigoPostal2: '8412' },
-    { localidad2: 'LA RINCONADA', codigoPostal2: '8424' },
-    { localidad2: 'LA RUBIA', codigoPostal2: '8417' },
-    { localidad2: 'LA SARA', codigoPostal2: '8360' },
-    { localidad2: 'LAS BAYAS', codigoPostal2: '8412' },
-    { localidad2: 'LAS GRUTAS', codigoPostal2: '8520' },
-    { localidad2: 'LA SIN BOMBO', codigoPostal2: '8336' },
-    { localidad2: 'LAS MAQUINAS', codigoPostal2: '8520' },
-    { localidad2: 'LAS MELLIZAS', codigoPostal2: '8417' },
-    { localidad2: 'LAS MOCHAS', codigoPostal2: '8534' },
-    { localidad2: 'LAS ÑATITAS', codigoPostal2: '8324' },
-    { localidad2: 'LA TEODOLINA', codigoPostal2: '8366' },
-    { localidad2: 'LA VENCEDORA', codigoPostal2: '8417' },
-    { localidad2: 'LANZANIYEN', codigoPostal2: '8424' },
-    { localidad2: 'LIPETREN', codigoPostal2: '8534' },
-    { localidad2: 'LOMA BLANCA', codigoPostal2: '8424' },
-    { localidad2: 'LOMA PARTIDA', codigoPostal2: '8418' },
-    { localidad2: 'LOS CANTAROS', codigoPostal2: '8411' },
-    { localidad2: 'LOS COSTEROS', codigoPostal2: '8417' },
-    { localidad2: 'LOS JUNCOS (DPTO. PILCANIYEU)', codigoPostal2: '8400' },
-    { localidad2: 'LOS JUNCOS (APEADERO FCGR) (MAQUINCHAO, DPTO. 25 DE MAYO)', codigoPostal2: '8422' },
-    { localidad2: 'LOS MANANTIALES', codigoPostal2: '8422' },
-    { localidad2: 'LOS MENUCOS (DPTO. 25 DE MAYO)', codigoPostal2: '8424' },
-    { localidad2: 'LOS MOLINOS', codigoPostal2: '8360' },
-    { localidad2: 'LOS PIRINEOS', codigoPostal2: '8417' },
-    { localidad2: 'LOS QUEBRACHOS', codigoPostal2: '8417' },
-    { localidad2: 'LOS REPOLLOS', codigoPostal2: '8430' },
-    { localidad2: 'LOS SAUCES', codigoPostal2: '8307' },
-    { localidad2: 'LUIS BELTRAN', codigoPostal2: '8361' },
-    { localidad2: 'LUIS M. ZAGAGLIA', codigoPostal2: '8503' },
-    { localidad2: 'LUPAY NIYEO', codigoPostal2: '8332' },
-    { localidad2: 'LLAO LLAO', codigoPostal2: '8409' },
-    { localidad2: 'MACACHIN', codigoPostal2: '8536' },
-    { localidad2: 'MAINQUE', codigoPostal2: '8326' },
-    { localidad2: 'MALLIN AHOGADO', codigoPostal2: '8430' },
-    { localidad2: 'MAMUEL CHOIQUE', codigoPostal2: '8415' },
-    { localidad2: 'MANCULLIQUE', codigoPostal2: '8422' },
-    { localidad2: 'MANCHA BLANCA', codigoPostal2: '8520' },
-    { localidad2: 'MAQUINCHAO', codigoPostal2: '8422' },
-    { localidad2: 'MARI LAUQUEN', codigoPostal2: '8422' },
-    { localidad2: 'MATA NEGRA', codigoPostal2: '8500' },
-    { localidad2: 'MEDIA LUNA', codigoPostal2: '8332' },
-    { localidad2: 'MENCUE', codigoPostal2: '8417' },
-    { localidad2: 'MENUCO NEGRO', codigoPostal2: '8534' },
-    { localidad2: 'MENUCO VACA MUERTA', codigoPostal2: '8412' },
-    { localidad2: 'MICHI HONOCA', codigoPostal2: '8333' },
-    { localidad2: 'MICHIHUAO', codigoPostal2: '8417' },
-    { localidad2: 'MINISTRO RAMOS MEXIA', codigoPostal2: '8534' },
-    { localidad2: 'MIRA PAMPA', codigoPostal2: '8366' },
-    { localidad2: 'MONTE BAGUAL', codigoPostal2: '8501' },
-    { localidad2: 'MONTE REDONDO', codigoPostal2: '8138' },
-    { localidad2: 'MULANILLO', codigoPostal2: '8417' },
-    { localidad2: 'MUSTERS', codigoPostal2: '8536' },
-    { localidad2: 'NAHUEL NIYEU', codigoPostal2: '8536' },
-    { localidad2: 'NAUPA HUEN', codigoPostal2: '8313' },
-    { localidad2: 'NEGRO MUERTO', codigoPostal2: '8360' },
-    { localidad2: 'NENEO RUCA (ESTACION FCGR)', codigoPostal2: '8416' },
-    { localidad2: 'NILUAN', codigoPostal2: '8422' },
-    { localidad2: 'NIRIHUAO (ESTACION FCGR)', codigoPostal2: '8400' },
-    { localidad2: 'NITRALA MACOHUE', codigoPostal2: '8418' },
-    { localidad2: 'NUEVA CAROLINA', codigoPostal2: '8503' },
-    { localidad2: 'NUEVO LEON', codigoPostal2: '8514' },
-    { localidad2: 'ÑIRIHUAO', codigoPostal2: '8400' },
-    { localidad2: 'ÑORQUINCO', codigoPostal2: '8415' },
-    { localidad2: 'OJOS DE AGUA (LLAO LLAO, DPTO. BARILOCHE)', codigoPostal2: '8409' },
-    { localidad2: 'OJOS DE AGUA (EMBARC. FCGR, ING. JACOBACCI, DPTO.25 DE MAYO)', codigoPostal2: '8418' },
-    { localidad2: 'PADRE ALEJANDRO STEFENELLI', codigoPostal2: '8332' },
-    { localidad2: 'PAJALTA (APEADERO FCGR)', codigoPostal2: '8536' },
-    { localidad2: 'PALENQUE NIYEU', codigoPostal2: '8417' },
-    { localidad2: 'PANQUEHUAO', codigoPostal2: '8412' },
-    { localidad2: 'PASO CORDOVA', codigoPostal2: '8333' },
-    { localidad2: 'PASO CHACABUCO', codigoPostal2: '8401' },
-    { localidad2: 'PASO DEL LIMAY', codigoPostal2: '8403' },
-    { localidad2: 'PASO DE LOS MOLLES', codigoPostal2: '8412' },
-    { localidad2: 'PASO FLORES', codigoPostal2: '8403' },
-    { localidad2: 'PASO LEZCANO', codigoPostal2: '8361' },
-    { localidad2: 'PASO MIRANDA', codigoPostal2: '8403' },
-    { localidad2: 'PASO PEÑALVA', codigoPostal2: '8363' },
-    { localidad2: 'PASO PIEDRA', codigoPostal2: '8360' },
-    { localidad2: 'PATU CO', codigoPostal2: '8333' },
-    { localidad2: 'PENINSULA HUEMUL', codigoPostal2: '8400' },
-    { localidad2: 'PENINSULA SAN PEDRO', codigoPostal2: '8401' },
-    { localidad2: 'PEÑAS BLANCAS', codigoPostal2: '8307' },
-    { localidad2: 'PERCY H. SCOTT (APEADERO FCGR)', codigoPostal2: '8520' },
-    { localidad2: 'PERITO MORENO', codigoPostal2: '8416' },
-    { localidad2: 'PICHI LEUFU (APEADERO FCGR)', codigoPostal2: '8412' },
-    { localidad2: 'PICHI LEUFU ABAJO', codigoPostal2: '8412' },
-    { localidad2: 'PICHI LEUFU ARRIBA', codigoPostal2: '8412' },
-    { localidad2: 'PICHI MAHUIDA', codigoPostal2: '8138' },
-    { localidad2: 'PIEDRA BLANCA (SAN CARLOS DE BARILOCHE, DPTO. BARILOCHE)', codigoPostal2: '8400' },
-    { localidad2: 'PIEDRA BLANCA (GRAL. ROCA, DPTO. GRAL. ROCA)', codigoPostal2: '8332' },
-    { localidad2: 'PIEDRA CLAVADA', codigoPostal2: '8536' },
-    { localidad2: 'PILAHUE', codigoPostal2: '8417' },
-    { localidad2: 'PILCANIYEU', codigoPostal2: '8412' },
-    { localidad2: 'PILCANIYEU VIEJO', codigoPostal2: '8412' },
-    { localidad2: 'PLANICIE DE JAGUELITO', codigoPostal2: '8333' },
-    { localidad2: 'PLAYA BONITA', codigoPostal2: '8400' },
-    { localidad2: 'POMONA', codigoPostal2: '8363' },
-    { localidad2: 'PORTEZUELO', codigoPostal2: '8415' },
-    { localidad2: 'POZO MORO', codigoPostal2: '8520' },
-    { localidad2: 'POZO SALADO', codigoPostal2: '8514' },
-    { localidad2: 'PRAHUANIYEU', codigoPostal2: '8424' },
-    { localidad2: 'PRIMERA ANGOSTURA', codigoPostal2: '8505' },
-    { localidad2: 'PRONUNCIAMIENTO', codigoPostal2: '8505' },
-    { localidad2: 'PUEBLO VIEJO', codigoPostal2: '8332' },
-    { localidad2: 'PUERTO BLEST', codigoPostal2: '8411' },
-    { localidad2: 'PUERTO HERMOSO', codigoPostal2: '8422' },
-    { localidad2: 'PUERTO MORENO', codigoPostal2: '8400' },
-    { localidad2: 'PUERTO OJO DE AGUA', codigoPostal2: '8401' },
-    { localidad2: 'PUERTO PAÑUELO', codigoPostal2: '8409' },
-    { localidad2: 'PUERTO PICHI MAHUIDA', codigoPostal2: '8400' },
-    { localidad2: 'PUERTO SANTA MARIA', codigoPostal2: '8401' },
-    { localidad2: 'PUERTO TIGRE', codigoPostal2: '8400' },
-    { localidad2: 'PUESTO FARIA', codigoPostal2: '8360' },
-    { localidad2: 'PUESTO GAVIÑA', codigoPostal2: '8503' },
-    { localidad2: 'PUNTA DE AGUA', codigoPostal2: '8356' },
-    { localidad2: 'QUEMPU NIYEU', codigoPostal2: '8332' },
-    { localidad2: 'QUETREQUILE', codigoPostal2: '8418' },
-    { localidad2: 'QUINIÑAU', codigoPostal2: '8415' },
-    { localidad2: 'QUINTA PANAL', codigoPostal2: '8416' },
-    { localidad2: 'QUO VADIS', codigoPostal2: '8422' },
-    { localidad2: 'RAYHUAO', codigoPostal2: '8412' },
-    { localidad2: 'REPOLLOS', codigoPostal2: '8415' },
-    { localidad2: 'RINCONADA', codigoPostal2: '8360' },
-    { localidad2: 'RINCON DE GASTRE', codigoPostal2: '8503' },
-    { localidad2: 'RIO COLORADO', codigoPostal2: '8138' },
-    { localidad2: 'RIO CHICO', codigoPostal2: '8415' },
-    { localidad2: 'RIO NIRIHUANO', codigoPostal2: '8400' },
-    { localidad2: 'RIO VILLEGAS', codigoPostal2: '8401' },
-    { localidad2: 'RIVADAVIA', codigoPostal2: '8418' },
-    { localidad2: 'RUCU LUAN', codigoPostal2: '8422' },
-    { localidad2: 'RUTA 3 KILOMETRO 974', codigoPostal2: '8500' },
-    { localidad2: 'SACO VIEJO', codigoPostal2: '8514' },
-    { localidad2: 'SALITRAL NEGRO', codigoPostal2: '8363' },
-    { localidad2: 'SAN ANTONIO DEL CUY', codigoPostal2: '8333' },
-    { localidad2: 'SAN ANTONIO OESTE', codigoPostal2: '8520' },
-    { localidad2: 'SAN CARLOS DE BARILOCHE', codigoPostal2: '8400' },
-    { localidad2: 'SAN CAYETANO', codigoPostal2: '8138' },
-    { localidad2: 'SAN EDUARDO', codigoPostal2: '8332' },
-    { localidad2: 'SAN JAVIER', codigoPostal2: '8501' },
-    { localidad2: 'SAN JORGE', codigoPostal2: '8324' },
-    { localidad2: 'SAN JOSE DE PAJA ALTA', codigoPostal2: '8536' },
-    { localidad2: 'SAN JUAN (GRAL. CONESA, DPTO. CONESA)', codigoPostal2: '8503' },
-    { localidad2: 'SAN JUAN (RIO COLORADO, DPTO. PICHI MAHUIDA)', codigoPostal2: '8138' },
-    { localidad2: 'SAN LEON', codigoPostal2: '8138' },
-    { localidad2: 'SAN LORENZO', codigoPostal2: '8503' },
-    { localidad2: 'SAN PABLO', codigoPostal2: '8364' },
-    { localidad2: 'SAN PEDRO (RIO COLORADO, DPTO. PICHI MAHUIDA)', codigoPostal2: '8138' },
-    { localidad2: 'SAN PEDRO (PILCANIYEU, DPTO. PILCANIYEU)', codigoPostal2: '8412' },
-    { localidad2: 'SAN RAMON', codigoPostal2: '8416' },
-    { localidad2: 'SAN SIMON', codigoPostal2: '8503' },
-    { localidad2: 'SANTA ANA', codigoPostal2: '8138' },
-    { localidad2: 'SANTA ELENA', codigoPostal2: '8417' },
-    { localidad2: 'SANTA GENOVEVA', codigoPostal2: '8363' },
-    { localidad2: 'SANTA GREGORIA', codigoPostal2: '8364' },
-    { localidad2: 'SANTA JULIA', codigoPostal2: '8366' },
-    { localidad2: 'SANTA NICOLASA', codigoPostal2: '8364' },
-    { localidad2: 'SAUCE BLANCO (GUARDIA MITRE, DPTO. ADOLFO ALSINA)', codigoPostal2: '8505' },
-    { localidad2: 'SAUCE BLANCO (CHOELE CHOEL, DPTO. AVELLANEDA)', codigoPostal2: '8360' },
-    { localidad2: 'SEGUNDA ANGOSTURA', codigoPostal2: '8501' },
-    { localidad2: 'SIERRA BLANCA', codigoPostal2: '8534' },
-    { localidad2: 'SIERRA COLORADA', codigoPostal2: '8534' },
-    { localidad2: 'SIERRA DE LA VENTANA', codigoPostal2: '8521' },
-    { localidad2: 'SIERRA GRANDE', codigoPostal2: '8532' },
-    { localidad2: 'SIERRA PAILEMAN', codigoPostal2: '8521' },
-    { localidad2: 'TALCAHUALA (APEADERO FCGR)', codigoPostal2: '8534' },
-    { localidad2: 'TAPILUQUE', codigoPostal2: '8534' },
-    { localidad2: 'TENIENTE GRAL. EUSTAQUIO FRIAS', codigoPostal2: '8501' },
-    { localidad2: 'TENIENTE MAZA (ESTACION FCGR)', codigoPostal2: '8534' },
-    { localidad2: 'TERCERA ZONA', codigoPostal2: '8336' },
-    { localidad2: 'TRAGUA TRAGUA', codigoPostal2: '8360' },
-    { localidad2: 'TRAVESIA CASTRO', codigoPostal2: '8503' },
-    { localidad2: 'TRECA-CO', codigoPostal2: '8333' },
-    { localidad2: 'TRENETA', codigoPostal2: '8534' },
-    { localidad2: 'TRES OJOS DE AGUA', codigoPostal2: '8416' },
-    { localidad2: 'TRICACO', codigoPostal2: '8332' },
-    { localidad2: 'TROMENIYEU', codigoPostal2: '8422' },
-    { localidad2: 'TUNKELEN', codigoPostal2: '8409' },
-    { localidad2: 'VACA LAUQUEN', codigoPostal2: '8422' },
-    { localidad2: 'VALCHETA', codigoPostal2: '8536' },
-    { localidad2: 'VALLE AZUL', codigoPostal2: '8336' },
-    { localidad2: 'VALLE DE LOS ALAMOS', codigoPostal2: '8307' },
-    { localidad2: 'VICEALMIRANTE EDUARDO O’CONNOR (ESTACION FCGR)', codigoPostal2: '8514' },
-    { localidad2: 'VIEDMA', codigoPostal2: '8500' },
-    { localidad2: 'VILLA ALBERDI', codigoPostal2: '8336' },
-    { localidad2: 'VILLA LLANQUIN', codigoPostal2: '8401' },
-    { localidad2: 'VILLA MASCARDI', codigoPostal2: '8401' },
-    { localidad2: 'VILLA REGINA', codigoPostal2: '8336' },
-    { localidad2: 'VILLA TURISMO', codigoPostal2: '8430' },
-    { localidad2: 'YUQUINCHE', codigoPostal2: '8418' },
-    { localidad2: 'ZANJON DE OYUELA', codigoPostal2: '8501' },
 
-  ]
 
   updatePostalCode(event: any) {
     const selectedLocality = event.target.value;
@@ -948,29 +497,17 @@ export class FormularioComponent implements OnInit {
     }
   }
 
-  updatePostalCodeAlternativo(event:any){
-    const selectedLocalidadAlternativa = event.target.value;
-    const selectedObjectAlternativo = this.localidadesAlternativas2.find(item => item.localidad2 === selectedLocalidadAlternativa);
-    if(selectedObjectAlternativo){
-      this.formularioReclamo.patchValue({
-        localidad2: selectedObjectAlternativo.localidad2,
-        codigoPostal2: selectedObjectAlternativo.codigoPostal2
-      });
-    }
-  }
+  // updatePostalCodeAlternativo(event:any){
+  //   const selectedLocalidadAlternativa = event.target.value;
+  //   const selectedObjectAlternativo = this.localidadesAlternativas2.find(item => item.localidad2 === selectedLocalidadAlternativa);
+  //   if(selectedObjectAlternativo){
+  //     this.formularioReclamo.patchValue({
+  //       localidad2: selectedObjectAlternativo.localidad2,
+  //       codigoPostal2: selectedObjectAlternativo.codigoPostal2
+  //     });
+  //   }
+  // }
 
-
-  isChecked1:boolean = false;
-  
-  isChecked2: boolean = false;
-  isChecked3:boolean = false;
-
-  toggleEmailInput() {
-    this.isChecked2 = !this.isChecked2;
-  }
-  togglecheckNombrePropioInput(){
-    this.isChecked3 = !this.isChecked3;
-  }
 
 
   ngOnInit(): void {
@@ -980,24 +517,22 @@ export class FormularioComponent implements OnInit {
       dni: [''],
       telefono: [''],
 
-      checkNombrePropio:[false],
-      nombreRepresentante:[''],
-      apellidoRepresentante:[''],
-      dniRepresentante:[''],
+      checkNombrePropio: [false],
+      nombreRepresentante: [''],
+      apellidoRepresentante: [''],
+      dniRepresentante: [''],
 
       direccion: [''],
       localidad: [''],
       codigoPostal: [''],
-     
-      direccionAlternativa: [''], 
+
+      direccionAlternativa: [''],
       localidadAlternativa: [''],
       codigoPostalAlternativo: [''],
 
-      // localidad2:[''],
-      // codigoPostal2:[''],
-      
-      nis:[''],
-      numeroDeCliente:[''],
+
+      nis: [''],
+      numeroDeCliente: [''],
 
       email: [''],
       errorFacturacion: [false],
@@ -1006,15 +541,42 @@ export class FormularioComponent implements OnInit {
       malaAtencionComercial: [false],
       negativaConexion: [false],
       inconvenienteTension: [false],
-      descripcion: [''],
-      emailNotifications: [false]
 
+      descripcion: [''],
+
+      emailNotifications: [false],
+
+
+
+      files: ['']
+    });
+    this.formularioReclamo.get('descripcion')?.valueChanges.subscribe((value) => {
+      console.log('Nuevo valor de descripcion:', value);
     });
   }
 
-  
+
+
+
+  isChecked1: boolean = false;
+
+  isChecked2: boolean = false;
+  isChecked3: boolean = false;
+
+  toggleEmailInput() {
+    const emailControl = this.formularioReclamo.get('email');
+    if (emailControl && !this.isChecked2) {
+      emailControl.setValue(null);
+    }
+    this.isChecked2 = !this.isChecked2;
+  }
+  togglecheckNombrePropioInput() {
+    this.isChecked3 = !this.isChecked3;
+  }
+
+
   //CHECKBOX DE COINCIDE CON DATOS 
-  isChecked: boolean = false; 
+  isChecked: boolean = false;
 
 
 
@@ -1035,11 +597,11 @@ export class FormularioComponent implements OnInit {
       this.formularioReclamo.get('codigoPostalAlternativo')?.setValue('');
     }
   }
-  copiarDireccion(){
+  copiarDireccion() {
     const direccionValue = this.formularioReclamo.get('direccion')?.value;
-    if(this.isChecked && direccionValue){
+    if (this.isChecked && direccionValue) {
       this.formularioReclamo.get('direccionAlternativa')?.setValue(direccionValue);
-    }else{
+    } else {
       this.formularioReclamo.get('direccionAlternativa')?.setValue('');
     }
   }
@@ -1060,32 +622,51 @@ export class FormularioComponent implements OnInit {
 
 
 
+  private showSweetAlertSuccess() {
+    Swal.fire({
+      icon: 'success',
+      title: 'Enviado!...',
+      text: 'Se han enviado sus datos, gracias!',
+
+    });
+  }
 
 
 
 
 
+  onSubmit() {
 
-
-
-  onsubmit() {
-    for (let i = 0; i < this.files.length; i++) {
-      if (this.files[i].size > this.maxSize) {
-        this.errorMessage =
-          'El tamaño del archivo excede el límite permitido de 10MB. No se puede enviar el formulario.';
-        this.isButtonDisabled = true;
-        return;
-      }
-    }
+    console.log('Valor de descripcion:', this.formularioReclamo.value.descripcion);
 
     const formData = new FormData();
+
     Object.keys(this.formularioReclamo.value).forEach((key) => {
-      formData.append(key, this.formularioReclamo.value[key]);
+      const value = this.formularioReclamo.value[key];
+
+      // Verificar si es un array antes de intentar iterar
+      if (Array.isArray(value)) {
+        value.forEach((item, index) => {
+          formData.append(`${key}[${index}]`, item);
+        });
+      } else {
+        formData.append(key, value);
+      }
     });
 
-    this.files.forEach((file, index) => {
-      formData.append('files', file, file.name);
-    });
+    console.log('Archivos seleccionados:', this.files);
+
+    if (this.files.length > 0) {
+      this.files.forEach((file, index) => {
+        formData.append('files', file, file.name);
+      });
+    } else {
+      console.log('No se han seleccionado archivos');
+    }
+
+    console.log('FormData:', formData);
+
+    this.showSweetAlertSuccess();
 
     this.emailService.sendEmailWithAttachment(formData).subscribe(
       (response) => {
@@ -1093,31 +674,15 @@ export class FormularioComponent implements OnInit {
       },
       (error) => {
         console.error('Error al enviar el correo electrónico:', error);
-      }
-    );
+      });
   }
 
 
 
 
 
-
-
-
-
-  onFileSelected(event: any) {
-    const files: File[] = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-      this.files.push(files[i]);
-    }
+  onFileSelected(files: FileList) {
+    this.files = Array.from(files);
   }
-
-
-
-
-
-
-
-
 
 }

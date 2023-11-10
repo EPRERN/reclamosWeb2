@@ -6,7 +6,7 @@
 
 
 
-    <form [formGroup]="formularioReclamo" (ngSubmit)="onsubmit()">
+    <form [formGroup]="formularioReclamo" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
         <div class="custom-card">
             <p-divider></p-divider>
             <h1 class="myHeader">
@@ -214,11 +214,11 @@
                         correo: </FONT>
                 </span>
             </div>
-            <br><br>
-            <form class="subscribe-form" *ngIf="isChecked2">
-                <input class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email"
-                    style="color: black;" [disabled]="!formularioReclamo.get('emailNotifications')?.value">
-            </form>
+            <!-- <input class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email"
+            style="color: black;" [disabled]="!formularioReclamo.get('emailNotifications')?.value"> -->
+            <input *ngIf="formularioReclamo.get('emailNotifications')?.value" class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email" style="color: black;" formControlName="email">
+
+      
             <p-divider></p-divider>
             <br><br>
         </div>
@@ -228,7 +228,8 @@
                     <FONT size="7" color="#6cbe45">↓</FONT>
                 </b></p-divider>
         </div>
-        <app-resarcimiento></app-resarcimiento>
+        <app-resarcimiento [(descripcion)]="formularioReclamo.value.descripcion"></app-resarcimiento>
+
 
         
         <div class="w-full md:w-2">
@@ -248,9 +249,14 @@
             </h1>
             <p-divider></p-divider>
             
-            <app-file-upload></app-file-upload>
+            <app-file-upload (filesSelected)="onFileSelected($event)" formControlName="files"></app-file-upload>
+
+
+
         </div>
+        <button class="button" type="submit" label="Submit">Enviar</button>
+    </form>
         <br><br>
-        <button class="button" (click)="onsubmit()" type="submit" label="Submit">Enviar</button>
+        
         <br><br><br>
      

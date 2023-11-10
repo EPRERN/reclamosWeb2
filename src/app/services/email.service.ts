@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EmailService {
-  private readonly baseUrl = 'http://localhost:3000/send-email'; // Cambia esta URL por la URL de tu servidor
+  private baseUrl = 'http://localhost:3000/send-email'; // Cambia esta URL por la URL de tu servidor
 
   constructor(private http: HttpClient) {}
 

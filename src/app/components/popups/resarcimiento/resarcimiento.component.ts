@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { PopResarcimientoComponent } from '../pop-resarcimiento/pop-resarcimiento.component';
@@ -11,6 +11,8 @@ import { PopResarcimientoComponent } from '../pop-resarcimiento/pop-resarcimient
 })
 export class ResarcimientoComponent {
 
+  @Input() descripcion: string = '';
+  @Output() descripcionChange: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(public dialog: MatDialog) {}
 
@@ -20,8 +22,9 @@ export class ResarcimientoComponent {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      // console.log(`Diálogo cerrado: ${result}`);
+      if (result) {
+        this.descripcionChange.emit(result);
+      }
     });
   }
-
 }

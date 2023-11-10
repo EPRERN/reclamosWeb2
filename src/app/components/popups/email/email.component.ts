@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-email',
@@ -7,5 +7,10 @@ import { Component, Input } from '@angular/core';
 })
 export class EmailComponent {
   @Input() isDisabled: boolean = true;
+  @Input() emailValue: string = '';
+  @Output() emailValueChange: EventEmitter<string> = new EventEmitter<string>();
 
+  onEmailInput() {
+    this.emailValueChange.emit(this.emailValue);
+  }
 }

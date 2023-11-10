@@ -1,53 +1,93 @@
-import { Component } from '@angular/core';
-import { FileUploadService } from 'src/app/services/file-upload.service';
+import { ChangeDetectorRef, Component, EventEmitter, Output, forwardRef } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.css']
+  styleUrls: ['./file-upload.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FileUploadComponent),
+      multi: true,
+    },
+  ],
 })
 export class FileUploadComponent {
   selectedFiles: File[] = [];
-  files: File[] = [];
   maxSize: number = 10 * 1024 * 1024; // 10 MB en bytes
   errorMessage: string = '';
-  isButtonDisabled: boolean = false;
 
-  constructor(private fileUploadService: FileUploadService) { }
+
+  @Output() filesSelected: EventEmitter<FileList> = new EventEmitter<FileList>();
+
+
+  writeValue(value: any): void {
+    if (value) {
+      this.selectedFiles = value;
+    }
+  }
+  registerOnChange(fn: any): void {}
+  registerOnTouched(fn: any): void {
+    // Implementa esto si necesitas registrar la función de "touched"
+  }
+  constructor(private cdr: ChangeDetectorRef) { }
 
  
   onFileSelected(event: any) {
-    const files: File[] = event.target.files;
+
+    const files: FileList = event.target.files;
+    this.filesSelected.emit(files);
+
+    // const files: File[] = event.target.files;
+    let totalSize = this.getTotalSize();
+
+    // Verificar si agregar los nuevos archivos excede el límite de tamaño total
     for (let i = 0; i < files.length; i++) {
-      if (files[i].size > this.maxSize) {
-        this.errorMessage =
-          'El tamaño del archivo excede el límite permitido de 10MB. Intente comprimir los archivos, si no sabe cómo, haga clic <a href="https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar" target="_blank">aquí</a>.';
-        this.isButtonDisabled = true;
-        this.files = [];
+      if (totalSize + files[i].size > this.maxSize) {
+        this.errorMessage = 'El tamaño total de los archivos excede el límite permitido de 10MB.';
+        this.showSweetAlertError();
+        this.clearFiles();
         return;
       }
-      this.files.push(files[i]);
     }
-  }
 
+    // Agregar archivos a la lista
+    this.selectedFiles.push(...Array.from(files));
+  }
 
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1);
   }
+
+  clearFiles() {
+    console.log('Clearing files...');
+    this.selectedFiles = [];
+    this.errorMessage = '';  // Restablecer el mensaje de error
+    console.log('Files cleared:', this.selectedFiles);
+  }
+
+  private getTotalSize(): number {
+    let totalSize = 0;
+
+    // Calcular el tamaño total de los archivos seleccionados
+    for (let i = 0; i < this.selectedFiles.length; i++) {
+      totalSize += this.selectedFiles[i].size;
+    }
+
+    return totalSize;
+  }
+  
+
+  private showSweetAlertError() {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      text: 'El tamaño total de los archivos excede el límite permitido de 10MB.',
+      footer: '<a href="https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar" target="_blank">Intente comprimir los archivos con Winrar</a>'
+    });
+  }
+ 
+  
 }
-
-
-
-  // uploadFiles() {
-  //   for (let i = 0; i < this.selectedFiles.length; i++) {
-  //     this.fileUploadService.uploadFile(this.selectedFiles[i]).subscribe(
-  //       (response) => {
-  //         console.log('Archivo subido exitosamente', response);
-  //       },
-  //       (error) => {
-  //         console.error('Fallo al subir el archivo', error);
-  //       }
-  //     );
-  //   }
-  // }
-// }

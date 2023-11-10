@@ -7,7 +7,8 @@ import { FormularioComponent } from './components/formulario/formulario.componen
 
 import { DividerModule } from 'primeng/divider';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { CardModule } from 'primeng/card';
 import { EmailComponent } from './components/popups/email/email.component';
@@ -18,7 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ToastModule } from 'primeng/toast';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
-
+import { HttpClientModule } from '@angular/common/http';
 import {MatDividerModule} from '@angular/material/divider'; 
 
 @NgModule({
@@ -43,7 +44,9 @@ import {MatDividerModule} from '@angular/material/divider';
     MatDialogModule,
     ToastModule,
     FileUploadModule,
-    MatDividerModule
+    MatDividerModule,
+    HttpClientModule,
+    
     
   ],
   providers: [],
