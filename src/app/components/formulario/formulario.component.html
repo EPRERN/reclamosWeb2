@@ -18,7 +18,7 @@
                 <span class="highlight"></span>
                 <input formControlName="nombre" id="nombre" required="" type="text" class="input">
                 <span class="bar"></span>
-                <label>Ingrese su Nombre &nbsp;/s</label>
+                <label><FONT color="red">(*)</FONT>&nbsp;Ingrese su Nombre &nbsp;/s</label>
             </div>
             <br>
             <br>
@@ -26,7 +26,7 @@
                 <input formControlName="apellido" id="apellido" required="" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Ingrese su Apellido</label>
+                <label><FONT color="red">(*)</FONT>&nbsp;Ingrese su Apellido</label>
             </div>
             <br>
             <br>
@@ -34,7 +34,7 @@
                 <input formControlName="dni" id="dni" required="" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Ingrese su DNI</label>
+                <label><FONT color="red">(*)</FONT>&nbsp;Ingrese su DNI</label>
             </div>
             <br>
             <br>
@@ -101,11 +101,11 @@
                 <input formControlName="direccion" id="direccion" required="" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Ingrese su Dirección</label>
+                <label><FONT color="red">(*)</FONT>&nbsp;Ingrese su Dirección</label>
             </div>
             <br>
             <br>
-            <p class="customP">Seleccione una Localidad:</p>
+            <p class="customP"><FONT color="red">(*)</FONT>&nbsp;Seleccione una Localidad:</p>
             <select class="custom-select" aria-label="Default select example" formControlName="localidad"
                 (change)="updatePostalCode($event)">
 
@@ -121,18 +121,21 @@
                 <span class="bar"></span>
             </div>
             <br><br>
+            <span><FONT color="red">(*) Debe rellenar alguno de estos 2 campos de abajo</FONT>&nbsp;</span>
+            <br>
+            <br>
             <div class="group">
                 <input formControlName="nis" id="nis" required="" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Número de NIS (usuarios EdERSA)</label>
+                <label>Nº de NIS (usuarios EdERSA)</label>
             </div>
             <br><br>
             <div class="group">
                 <input formControlName="numeroDeCliente" id="numeroDeCliente" required="" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Número de Cliente (usuarios EdERSA)</label>
+                <label>Nº Cuenta: &nbsp; (CEB / CEARC)</label>
             </div><br><br>
         </div>
 
@@ -191,13 +194,12 @@
             </div>
             <br><br>
             <div class="group">
-                <input formControlName="telefono" id="telefono" required="" type="text"
-                    class="input">
+                <input formControlName="telefono" id="telefono" required="" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label>Teléfono:</label>
             </div>
-            
+
             <br><br>
             <p-divider></p-divider>
             <div class="checkbox-container">
@@ -216,22 +218,42 @@
             </div>
             <!-- <input class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email"
             style="color: black;" [disabled]="!formularioReclamo.get('emailNotifications')?.value"> -->
-            <input *ngIf="formularioReclamo.get('emailNotifications')?.value" class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email" style="color: black;" formControlName="email">
+            <input *ngIf="formularioReclamo.get('emailNotifications')?.value" class="subscribe-input"
+                placeholder="Ingrese su correo electrónico AQUÍ" type="email" style="color: black;"
+                formControlName="email">
 
-      
+
             <p-divider></p-divider>
             <br><br>
         </div>
-        
+
         <div class="w-full md:w-2">
             <p-divider layout="vertical" styleClass="hidden md:flex"><b>
                     <FONT size="7" color="#6cbe45">↓</FONT>
                 </b></p-divider>
         </div>
-        <app-resarcimiento [(descripcion)]="formularioReclamo.value.descripcion"></app-resarcimiento>
+        <app-resarcimiento
+    [errorFacturacion]="formularioReclamo.value.errorFacturacion"
+    [resarcimiento]="formularioReclamo.value.resarcimiento"
+    [suspencionSuministro]="formularioReclamo.value.suspencionSuministro"
+    [malaAtencionComercial]="formularioReclamo.value.malaAtencionComercial"
+    [negativaConexion]="formularioReclamo.value.negativaConexion"
+    [inconvenienteTension]="formularioReclamo.value.inconvenienteTension"
+    (checkboxChange)="checkboxChanged($event)">
+  </app-resarcimiento>   <div class="custom-card">
+            <p-divider></p-divider>
+            <h1 class="myHeader">
+                <FONT size="6">RECLAMO</FONT>
+            </h1>
+            <p-divider></p-divider>
+            <div class="group">
+                <label for="descripcion">Describa detalladamente su Reclamo:</label><br><br>
+                <textarea class="myTextArea" id="descripcion" formControlName="descripcion" rows="3"></textarea>
 
+            </div>
 
-        
+        </div>
+
         <div class="w-full md:w-2">
             <p-divider layout="vertical" styleClass="hidden md:flex"><b>
                     <FONT size="7" color="#6cbe45">↓</FONT>
@@ -248,15 +270,15 @@
                 <FONT size="6">Subir Adjuntos</FONT>
             </h1>
             <p-divider></p-divider>
-            
+
             <app-file-upload (filesSelected)="onFileSelected($event)" formControlName="files"></app-file-upload>
 
 
 
         </div>
-        <button class="button" type="submit" label="Submit">Enviar</button>
+        <button class="button" type="submit" [disabled]="isButtonDisabled" label="Submit">Enviar</button>
+        <br>
     </form>
-        <br><br>
-        
-        <br><br><br>
-     
+    <br><br>
+
+    <br><br><br>

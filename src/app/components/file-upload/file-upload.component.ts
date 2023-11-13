@@ -85,7 +85,8 @@ export class FileUploadComponent {
       icon: 'error',
       title: 'Error...',
       text: 'El tamaño total de los archivos excede el límite permitido de 10MB.',
-      footer: '<a href="https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar" target="_blank">Intente comprimir los archivos con Winrar</a>'
+      footer: '<br> <a href="https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar" target="_blank">Cómo comprimir los archivos con Winrar para ahorrar Espacio</a> <br><br>  <a href="https://www.winrar.es/descargas/winrar" target="_blank">(No tengo Winrar)</a>',
+      
     });
   }
  

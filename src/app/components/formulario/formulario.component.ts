@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CheckboxService } from 'src/app/services/checkbox.service';
 import { EmailService } from 'src/app/services/email.service';
 import Swal from 'sweetalert2';
 
@@ -20,11 +21,11 @@ export class FormularioComponent implements OnInit {
   files: File[] = [];
 
 
-
   errorMessage: string = '';
-  isButtonDisabled: boolean = false;
+  isButtonDisabled: boolean = true;
 
   constructor(public fb: FormBuilder, private emailService: EmailService,
+    private checkboxService: CheckboxService
   ) { }
 
   localidades: any[] = [
@@ -497,24 +498,15 @@ export class FormularioComponent implements OnInit {
     }
   }
 
-  // updatePostalCodeAlternativo(event:any){
-  //   const selectedLocalidadAlternativa = event.target.value;
-  //   const selectedObjectAlternativo = this.localidadesAlternativas2.find(item => item.localidad2 === selectedLocalidadAlternativa);
-  //   if(selectedObjectAlternativo){
-  //     this.formularioReclamo.patchValue({
-  //       localidad2: selectedObjectAlternativo.localidad2,
-  //       codigoPostal2: selectedObjectAlternativo.codigoPostal2
-  //     });
-  //   }
-  // }
 
 
 
   ngOnInit(): void {
+    this.showWelcomePopup();
     this.formularioReclamo = this.fb.group({
-      nombre: [''],
-      apellido: [''],
-      dni: [''],
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      dni: ['', Validators.required],
       telefono: [''],
 
       checkNombrePropio: [false],
@@ -522,9 +514,9 @@ export class FormularioComponent implements OnInit {
       apellidoRepresentante: [''],
       dniRepresentante: [''],
 
-      direccion: [''],
-      localidad: [''],
-      codigoPostal: [''],
+      direccion: ['', Validators.required],
+      localidad: ['', Validators.required],
+      codigoPostal: ['', Validators.required],
 
       direccionAlternativa: [''],
       localidadAlternativa: [''],
@@ -535,12 +527,15 @@ export class FormularioComponent implements OnInit {
       numeroDeCliente: [''],
 
       email: [''],
+
+
       errorFacturacion: [false],
       resarcimiento: [false],
       suspencionSuministro: [false],
       malaAtencionComercial: [false],
       negativaConexion: [false],
       inconvenienteTension: [false],
+      facturaFueraDeTermino: [false],
 
       descripcion: [''],
 
@@ -550,12 +545,23 @@ export class FormularioComponent implements OnInit {
 
       files: ['']
     });
-    this.formularioReclamo.get('descripcion')?.valueChanges.subscribe((value) => {
-      console.log('Nuevo valor de descripcion:', value);
+    this.checkboxService.getCheckboxState().subscribe((state) => {
+      console.log('Estado actual de los checkboxes:', state);
+      // this.isDisabled = !state;
+      this.isButtonDisabled = !state;
     });
+
   }
 
-
+  showWelcomePopup() {
+    Swal.fire({
+      title: '¡Bienvenido!',
+      html: '<h2>Por favor, complete todos los campos antes de enviar el formulario.<br> <FONT color="red">Los Campos con (*) son OBLIGATORIOS</FONT></h2>',
+      icon: 'info',
+      confirmButtonText: 'Entendido',
+      
+    });
+  }
 
 
   isChecked1: boolean = false;
@@ -635,54 +641,106 @@ export class FormularioComponent implements OnInit {
 
 
 
+
+
   onSubmit() {
 
-    console.log('Valor de descripcion:', this.formularioReclamo.value.descripcion);
+    if (this.formularioReclamo.valid) {
 
-    const formData = new FormData();
+      console.log('Valor de descripcion:', this.formularioReclamo.value.descripcion);
 
-    Object.keys(this.formularioReclamo.value).forEach((key) => {
-      const value = this.formularioReclamo.value[key];
+      const formData = new FormData();
 
-      // Verificar si es un array antes de intentar iterar
-      if (Array.isArray(value)) {
-        value.forEach((item, index) => {
-          formData.append(`${key}[${index}]`, item);
+      Object.keys(this.formularioReclamo.value).forEach((key) => {
+        const value = this.formularioReclamo.value[key];
+
+        // Verificar si es un array antes de intentar iterar
+        if (Array.isArray(value)) {
+          value.forEach((item, index) => {
+            formData.append(`${key}[${index}]`, item);
+          });
+        } else {
+          formData.append(key, value);
+        }
+      });
+
+      console.log('Archivos seleccionados:', this.files);
+
+      if (this.files.length > 0) {
+        this.files.forEach((file, index) => {
+          formData.append('files', file, file.name);
         });
       } else {
-        formData.append(key, value);
+        console.log('No se han seleccionado archivos');
       }
-    });
 
-    console.log('Archivos seleccionados:', this.files);
+      console.log('FormData:', formData);
 
-    if (this.files.length > 0) {
-      this.files.forEach((file, index) => {
-        formData.append('files', file, file.name);
-      });
+      this.showSweetAlertSuccess();
+
+      this.emailService.sendEmailWithAttachment(formData).subscribe(
+        (response) => {
+          console.log('Correo electrónico enviado con éxito', response);
+        },
+        (error) => {
+          console.error('Error al enviar el correo electrónico:', error);
+        });
     } else {
-      console.log('No se han seleccionado archivos');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos obligatorios',
+        html: '<h1><FONT color="red">Por favor, complete todos los campos obligatorios antes de enviar el formulario.</FONT></h1>',
+      });
     }
 
-    console.log('FormData:', formData);
-
-    this.showSweetAlertSuccess();
-
-    this.emailService.sendEmailWithAttachment(formData).subscribe(
-      (response) => {
-        console.log('Correo electrónico enviado con éxito', response);
-      },
-      (error) => {
-        console.error('Error al enviar el correo electrónico:', error);
-      });
   }
 
 
 
-
+  checkboxChanged(checkboxData: any) {
+    this.formularioReclamo.patchValue(checkboxData);
+  }
 
   onFileSelected(files: FileList) {
     this.files = Array.from(files);
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// updatePostalCodeAlternativo(event:any){
+//   const selectedLocalidadAlternativa = event.target.value;
+//   const selectedObjectAlternativo = this.localidadesAlternativas2.find(item => item.localidad2 === selectedLocalidadAlternativa);
+//   if(selectedObjectAlternativo){
+//     this.formularioReclamo.patchValue({
+//       localidad2: selectedObjectAlternativo.localidad2,
+//       codigoPostal2: selectedObjectAlternativo.codigoPostal2
+//     });
+//   }
+// }

@@ -1,0 +1,116 @@
+<div class="card">
+    <p class="card-title">Tipo de Reclamo</p>
+    <p-divider></p-divider>
+
+
+    <br>
+
+    <table class="checkbox-table">
+        <tr>
+            <td class="label-cell">Errores en Facturación:</td>
+            <td class="checkbox-cell">
+                <div class="checkbox-wrapper-31">
+                    <input type="checkbox" [(ngModel)]="errorFacturacion"
+                        (change)="checkboxChanged('errorFacturacion', $event)">
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </td>
+        </tr><br>
+        <tr>
+            <td class="label-cell">Resarcimiento por Daños:</td>
+            <td class="checkbox-cell">
+                <div class="checkbox-wrapper-31" (click)="openDialog()">
+                    <input type="checkbox" [(ngModel)]="resarcimiento"
+                        (change)="checkboxChanged('resarcimiento', $event)">
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </td>
+        </tr><br>
+        <tr>
+            <td class="label-cell">Suspensión de Suministro:</td>
+            <td class="checkbox-cell">
+                <div class="checkbox-wrapper-31">
+                    <input type="checkbox" [(ngModel)]="suspencionSuministro"
+                        (change)="checkboxChanged('suspencionSuministro', $event)">
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </td>
+        </tr><br>
+        <tr>
+            <td class="label-cell">Mala atención comercial:</td>
+            <td class="checkbox-cell">
+                <div class="checkbox-wrapper-31">
+                    <input type="checkbox" [(ngModel)]="malaAtencionComercial"
+                        (change)="checkboxChanged('malaAtencionComercial', $event)">
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </td>
+        </tr><br>
+        <tr>
+            <td class="label-cell">Negativa de Conexión:</td>
+            <td class="checkbox-cell">
+                <div class="checkbox-wrapper-31">
+                    <input type="checkbox" [(ngModel)]="negativaConexion"
+                        (change)="checkboxChanged('negativaConexion', $event)">
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </td>
+        </tr><br>
+        <tr>
+            <td class="label-cell">Inconveniente de Tensión:</td>
+            <td class="checkbox-cell">
+                <div class="checkbox-wrapper-31">
+                    <input type="checkbox" [(ngModel)]="inconvenienteTension" (change)="checkboxChanged('inconvenienteTension', $event)">
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </td>
+        </tr><br>
+        <tr>
+            <td class="label-cell">Factura Fuera de Termino/no recibidas:</td>
+            <td class="checkbox-cell">
+                <div class="checkbox-wrapper-31">
+                    <input type="checkbox" [(ngModel)]="facturaFueraDeTermino" (change)="checkboxChanged('facturaFueraDeTermino', $event)">
+                    <svg viewBox="0 0 35.6 35.6">
+                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                    </svg>
+                </div>
+            </td>
+
+        </tr>
+
+    </table>
+
+
+
+      
+
+        <div class="go-corner">
+            <div class="go-arrow"></div>
+        </div>
+</div>

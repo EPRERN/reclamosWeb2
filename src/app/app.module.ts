@@ -11,25 +11,27 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { CardModule } from 'primeng/card';
-import { EmailComponent } from './components/popups/email/email.component';
-import { ResarcimientoComponent } from './components/popups/resarcimiento/resarcimiento.component';
-import { PopResarcimientoComponent } from './components/popups/pop-resarcimiento/pop-resarcimiento.component';
+
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ToastModule } from 'primeng/toast';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { HttpClientModule } from '@angular/common/http';
-import {MatDividerModule} from '@angular/material/divider'; 
+import { MatDividerModule } from '@angular/material/divider';
+import { PopResarcimientoComponent } from './components/resarcimientos/pop-resarcimiento/pop-resarcimiento.component';
+import { ResarcimientoComponent } from './components/resarcimientos/resarcimiento/resarcimiento.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormularioComponent,
-    EmailComponent,
     ResarcimientoComponent,
     PopResarcimientoComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -46,8 +48,8 @@ import {MatDividerModule} from '@angular/material/divider';
     FileUploadModule,
     MatDividerModule,
     HttpClientModule,
-    
-    
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
