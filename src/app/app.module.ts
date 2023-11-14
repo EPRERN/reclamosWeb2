@@ -23,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDividerModule } from '@angular/material/divider';
 import { PopResarcimientoComponent } from './components/resarcimientos/pop-resarcimiento/pop-resarcimiento.component';
 import { ResarcimientoComponent } from './components/resarcimientos/resarcimiento/resarcimiento.component';
+import { EasterComponent } from './components/easter/easter.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ResarcimientoComponent } from './components/resarcimientos/resarcimient
     ResarcimientoComponent,
     PopResarcimientoComponent,
     FileUploadComponent,
+    EasterComponent,
     
   ],
   imports: [

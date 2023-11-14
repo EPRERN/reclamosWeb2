@@ -1,12 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CheckboxService } from 'src/app/services/checkbox.service';
 import { EmailService } from 'src/app/services/email.service';
+import { PopupService } from 'src/app/services/popup.service';
 import Swal from 'sweetalert2';
 
 
-
+import { MatDialog } from '@angular/material/dialog';
+import { EasterComponent } from '../easter/easter.component';
 
 @Component({
   selector: 'app-formulario',
@@ -23,9 +26,14 @@ export class FormularioComponent implements OnInit {
 
   errorMessage: string = '';
   isButtonDisabled: boolean = true;
+  showPopup = false;
+
 
   constructor(public fb: FormBuilder, private emailService: EmailService,
-    private checkboxService: CheckboxService
+    private checkboxService: CheckboxService,
+    private popupService:PopupService,
+    private router:Router,
+    public dialog:MatDialog
   ) { }
 
   localidades: any[] = [
@@ -546,7 +554,7 @@ export class FormularioComponent implements OnInit {
       files: ['']
     });
     this.checkboxService.getCheckboxState().subscribe((state) => {
-      console.log('Estado actual de los checkboxes:', state);
+      // console.log('Estado actual de los checkboxes:', state);
       // this.isDisabled = !state;
       this.isButtonDisabled = !state;
     });
@@ -554,12 +562,11 @@ export class FormularioComponent implements OnInit {
   }
 
   showWelcomePopup() {
-    Swal.fire({
+     Swal.fire({
       title: '¡Bienvenido!',
       html: '<h2>Por favor, complete todos los campos antes de enviar el formulario.<br> <FONT color="red">Los Campos con (*) son OBLIGATORIOS</FONT></h2>',
-      icon: 'info',
-      confirmButtonText: 'Entendido',
-      
+      icon: 'warning',
+      confirmButtonText: 'Entendido'
     });
   }
 
@@ -647,7 +654,7 @@ export class FormularioComponent implements OnInit {
 
     if (this.formularioReclamo.valid) {
 
-      console.log('Valor de descripcion:', this.formularioReclamo.value.descripcion);
+      // console.log('Valor de descripcion:', this.formularioReclamo.value.descripcion);
 
       const formData = new FormData();
 
@@ -664,14 +671,14 @@ export class FormularioComponent implements OnInit {
         }
       });
 
-      console.log('Archivos seleccionados:', this.files);
+      // console.log('Archivos seleccionados:', this.files);
 
       if (this.files.length > 0) {
         this.files.forEach((file, index) => {
           formData.append('files', file, file.name);
         });
       } else {
-        console.log('No se han seleccionado archivos');
+        // console.log('No se han seleccionado archivos');
       }
 
       console.log('FormData:', formData);
@@ -680,10 +687,10 @@ export class FormularioComponent implements OnInit {
 
       this.emailService.sendEmailWithAttachment(formData).subscribe(
         (response) => {
-          console.log('Correo electrónico enviado con éxito', response);
+          // console.log('Correo electrónico enviado con éxito', response);
         },
         (error) => {
-          console.error('Error al enviar el correo electrónico:', error);
+          // console.error('Error al enviar el correo electrónico:', error);
         });
     } else {
       Swal.fire({
@@ -704,6 +711,14 @@ export class FormularioComponent implements OnInit {
   onFileSelected(files: FileList) {
     this.files = Array.from(files);
   }
+  openPopup(): void {
+    const dialogRef = this.dialog.open(EasterComponent, {
+      width: '480px', 
+      height:'550px',
+      
+    });
+  }
+
 
 }
 

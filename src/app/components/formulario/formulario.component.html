@@ -5,7 +5,7 @@
     <!-- CARD DE DATOS RECLAMANTE  -->
 
 
-
+    <!-- <button class="miniButton"></button> -->
     <form [formGroup]="formularioReclamo" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
         <div class="custom-card">
             <p-divider></p-divider>
@@ -125,14 +125,14 @@
             <br>
             <br>
             <div class="group">
-                <input formControlName="nis" id="nis" required="" type="text" class="input">
+                <input formControlName="nis" id="nis" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label>Nº de NIS (usuarios EdERSA)</label>
             </div>
             <br><br>
             <div class="group">
-                <input formControlName="numeroDeCliente" id="numeroDeCliente" required="" type="text" class="input">
+                <input formControlName="numeroDeCliente" id="numeroDeCliente" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
                 <label>Nº Cuenta: &nbsp; (CEB / CEARC)</label>
@@ -154,8 +154,12 @@
             </h1>
             <p-divider></p-divider>
             <br><br>
+            <FONT color="red">(*)&nbsp;&nbsp;</FONT>
+            <br>
             <div class="checkbox-container">
+                
                 <span>
+                    
                     <FONT color="#42752a">Coincide con la Dirección de Suministro: &nbsp;</FONT>
                 </span>
                 <div class="checkbox-wrapper-31">
@@ -170,11 +174,13 @@
             </div>
             <br><br>
             <div class="group">
+                
                 <input formControlName="direccionAlternativa" id="direccionAlternativa" required="" type="text"
                     class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Ingrese su Dirección</label>
+                <label> <FONT color="red">(*)&nbsp;&nbsp;
+                </FONT>Ingrese su Dirección</label>
             </div>
             <br><br>
             <div class="group">
@@ -182,7 +188,8 @@
                     class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Localidad:</label>
+                <label> <FONT color="red">(*)&nbsp;&nbsp;
+                </FONT>Localidad:</label>
             </div>
             <br><br>
             <div class="group">
@@ -190,39 +197,28 @@
                     class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Código Postal:</label>
+                <label> <FONT color="red">(*)&nbsp;&nbsp;
+                </FONT>Código Postal:</label>
             </div>
             <br><br>
             <div class="group">
                 <input formControlName="telefono" id="telefono" required="" type="text" class="input">
                 <span class="highlight"></span>
                 <span class="bar"></span>
-                <label>Teléfono:</label>
+                <label><FONT color="red">(*)</FONT>&nbsp;Ingrese su Teléfono:</label>
             </div>
 
             <br><br>
             <p-divider></p-divider>
-            <div class="checkbox-container">
-                <div class="checkbox-wrapper-31">
-                    <input type="checkbox" formControlName="emailNotifications" (change)="toggleEmailInput()">
-                    <svg viewBox="0 0 35.6 35.6">
-                        <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
-                        <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
-                        <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
-                    </svg>
-                </div>
-                <span>
-                    <FONT color="#42752a">&nbsp;&nbsp;Quiero Recibir notificaciones del EPRE en mi
-                        correo: </FONT>
-                </span>
+            <div class="group">
+                <input formControlName="email" id="email" required="" type="text" class="input">
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label><FONT color="red">(*)</FONT>&nbsp;Ingrese su correo Electrónico:</label>
             </div>
-            <!-- <input class="subscribe-input" placeholder="Ingrese su correo electrónico AQUÍ" type="email"
-            style="color: black;" [disabled]="!formularioReclamo.get('emailNotifications')?.value"> -->
-            <input *ngIf="formularioReclamo.get('emailNotifications')?.value" class="subscribe-input"
-                placeholder="Ingrese su correo electrónico AQUÍ" type="email" style="color: black;"
-                formControlName="email">
 
 
+            
             <p-divider></p-divider>
             <br><br>
         </div>
@@ -280,5 +276,7 @@
         <br>
     </form>
     <br><br>
-
+    <app-easter *ngIf="showPopup"></app-easter>
+    <button class="miniButton" (click)="openPopup()"></button>
+    
     <br><br><br>

@@ -62,10 +62,10 @@ export class FileUploadComponent {
   }
 
   clearFiles() {
-    console.log('Clearing files...');
+    // console.log('Clearing files...');
     this.selectedFiles = [];
     this.errorMessage = '';  // Restablecer el mensaje de error
-    console.log('Files cleared:', this.selectedFiles);
+    // console.log('Files cleared:', this.selectedFiles);
   }
 
   private getTotalSize(): number {
