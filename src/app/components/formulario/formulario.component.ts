@@ -191,9 +191,10 @@ export class FormularioComponent implements OnInit {
 
   showWelcomePopup() {
      Swal.fire({
-      title: '¡Bienvenido!',
-      html: '<h2>Por favor, complete todos los campos antes de enviar el formulario.<br> <FONT color="red">Los Campos con (*) son OBLIGATORIOS</FONT></h2>',
-      icon: 'warning',
+      title: '<br><h1><FONT size=7 color=#94ca4d><strong><u>¡Bienvenido!<u></FONT></strong></h1>',
+      html: '<h2>Por favor, lea atentamente los campos antes de completar el formulario.<br> <FONT color="red">Los Campos con (*) son OBLIGATORIOS</FONT></h2>',
+      imageUrl:'../../assets/Epre.png',
+      // icon: 'warning',
       confirmButtonText: 'Entendido'
     });
   }

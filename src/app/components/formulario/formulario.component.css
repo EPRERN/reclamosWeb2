@@ -76,8 +76,7 @@ button:active {
 
 
 .miniButton{
-  margin-left: 95%;
-  margin-top: 0%;
+  align-items: center;
   background-color: #ffffff;
   border: 1px solid #ced4da;
   color: #787878;
@@ -482,4 +481,36 @@ label {
 
 .subscribe-input::placeholder {
   color: #000000;
+}
+
+
+@media screen and (min-width: 68px) {
+  .custom-card {
+    max-width: 380px;
+    margin-left: 5px; /* Ajuste para dispositivos medianos */
+  }
+  .myTextArea{
+    max-width: 550px;
+    margin-left: 23px; 
+  }
+}
+
+@media screen and (min-width: 24px) {
+  .custom-card {
+    max-width: 550px;
+    margin-left: 23px; /* Ajuste para dispositivos grandes */
+  }
+  .myTextArea{
+    max-width: 350px;
+    margin-left: 3px; 
+  }
+  .group{
+    max-width: 350px;
+    margin-left: 13px; 
+  }
+  .custom-select{
+    max-width: 350px;
+    margin-left: 13px; 
+    margin-right: 13px;
+  }
 }
