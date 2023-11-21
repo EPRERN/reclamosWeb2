@@ -1,0 +1,1335 @@
+Si no tienes un backend, puedes usar un servicio de backend como SendGrid o implementar un servidor backend simple por ti mismo. Una forma relativamente sencilla de hacerlo es utilizando Node.js y Express para crear un servidor backend que pueda manejar las solicitudes de envío de correo electrónico desde tu aplicación de Angular. A continuación se muestra un ejemplo básico de cómo puedes configurar un servidor backend simple para manejar el envío de correos electrónicos utilizando Node.js y Express:
+
+Primero, asegúrate de tener Node.js instalado en tu máquina. Luego, sigue los pasos a continuación:
+
+    Crea un nuevo directorio para tu servidor backend y navega hasta ese directorio en tu terminal.
+
+    Inicializa un nuevo proyecto de Node.js ejecutando el siguiente comando en tu terminal:
+
+bash
+
+npm init -y
+
+    Instala los paquetes necesarios para tu servidor backend ejecutando el siguiente comando:
+
+bash
+
+npm install express nodemailer body-parser cors --save
+
+    Crea un archivo server.js en tu directorio y agrega el siguiente código:
+
+javascript
+
+const express = require('express');
+const nodemailer = require('nodemailer');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.post('/enviarDatos', (req, res) => {
+  const data = req.body.data; // Aquí obtienes los datos del formulario
+  const archivos = req.files; // Aquí obtienes los archivos adjuntos
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'TU_CORREO@gmail.com', // Agrega tu correo electrónico de Gmail aquí
+      pass: 'TU_CONTRASEÑA' // Agrega tu contraseña de Gmail aquí
+    }
+  });
+
+  const mailOptions = {
+    from: 'TU_CORREO@gmail.com',
+    to: 'lautiavila96@gmail.com', // Agrega tu dirección de correo electrónico aquí
+    subject: 'Datos del formulario de contacto',
+    text: JSON.stringify(data) // Aquí conviertes los datos a formato de texto
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Error al enviar el correo electrónico');
+    } else {
+      console.log('Correo electrónico enviado: ' + info.response);
+      res.status(200).send('Correo electrónico enviado con éxito');
+    }
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
+Asegúrate de reemplazar 'TU_CORREO@gmail.com' y 'TU_CONTRASEÑA' con tu dirección de correo electrónico y contraseña de Gmail respectivamente. Ten en cuenta que este enfoque básico no es seguro para aplicaciones en producción y se recomienda implementar medidas de seguridad adecuadas, como el manejo seguro de contraseñas y la autenticación del usuario. Además, considera el uso de variables de entorno para ocultar información confidencial como credenciales.
+User
+BRINDAME TODO EL FULL STACK PARA QUE EL RESULTADO PERMITA QUE EL USUARIO INGRESE DATOS EN EL FORMULARIO, Y SUBA ADJUNTOS, Y TODO ESO SE ENVÍE POR MAIL ...
+
+ESTE ES EL SERVIDOR HOST DE MAIL :  ************************
+ESTE ES MI USUARIO: **************
+CONTRASEÑA: ********************
+SSL = FALSE (NO USA SSL) 
+ChatGPT
+2 / 2
+
+Para lograr esto, necesitarás configurar tanto el backend como el frontend. Aquí tienes un ejemplo básico de cómo puedes configurar todo el stack. Este ejemplo usa Node.js y Express para el backend, y Angular para el frontend. Asegúrate de tener Node.js y Angular instalados en tu máquina.
+
+Configuración del Backend (Node.js y Express):
+
+    Crea un nuevo directorio para tu proyecto y navega hasta ese directorio en tu terminal.
+
+    Inicializa un nuevo proyecto de Node.js ejecutando el siguiente comando en tu terminal:
+
+bash
+
+npm init -y
+
+    Instala los paquetes necesarios para tu servidor backend ejecutando el siguiente comando:
+
+bash
+
+npm install express nodemailer multer cors --save
+
+    Crea un archivo server.js en tu directorio y agrega el siguiente código:
+
+javascript
+
+const express = require('express');
+const nodemailer = require('nodemailer');
+const multer = require('multer');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+app.post('/send-email', upload.array('files'), (req, res) => {
+  const { nombre, apellido, dni, telefono, email, descripcion } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    host: '*************************',
+    port: 587,
+    auth: {
+      user: '*********************',
+      pass: ********************
+    }
+  });
+
+  const mailOptions = {
+    from: ***********************
+    to: **************************,
+    subject: 'Nuevo formulario de contacto',
+    text: `
+      Nombre: ${nombre}
+      Apellido: ${apellido}
+      DNI: ${dni}
+      Teléfono: ${telefono}
+      Email: ${email}
+      Descripción: ${descripcion}
+    `,
+    attachments: req.files.map((file) => ({
+      filename: file.originalname,
+      content: file.buffer
+    }))
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Error al enviar el correo electrónico');
+    } else {
+      console.log('Correo electrónico enviado: ' + info.response);
+      res.status(200).send('Correo electrónico enviado con éxito');
+    }
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
+Configuración del Frontend (Angular):
+
+    Crea un nuevo proyecto de Angular si aún no lo has hecho ejecutando el siguiente comando:
+
+bash
+
+ng new nombre-del-proyecto
+
+    Crea un componente para tu formulario de contacto y agrega el siguiente código:
+
+typescript
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-formulario',
+  templateUrl: './formulario.component.html',
+  styleUrls: ['./formulario.component.css']
+})
+export class FormularioComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  enviarFormulario() {
+    const formData = new FormData();
+    formData.append('nombre', this.formData.nombre);
+    formData.append('apellido', this.formData.apellido);
+    formData.append('dni', this.formData.dni);
+    formData.append('telefono', this.formData.telefono);
+    formData.append('email', this.formData.email);
+    formData.append('descripcion', this.formData.descripcion);
+    this.files.forEach((file, index) => {
+      formData.append('files', file, file.name);
+    });
+
+    this.http.post('http://localhost:3000/send-email', formData)
+      .subscribe((response) => {
+        console.log('Correo electrónico enviado con éxito');
+      }, (error) => {
+        console.error('Error al enviar el correo electrónico:', error);
+      });
+  }
+
+  handleFileInput(files: FileList) {
+    for (let i = 0; i < files.length; i++) {
+      this.files.push(files.item(i) as File);
+    }
+  }
+}
+
+En el componente anterior, enviarFormulario es llamado cuando el formulario se envía, y handleFileInput se utiliza para manejar la selección de archivos. Asegúrate de que tu formulario esté configurado adecuadamente en el template HTML.
+
+Asegúrate de haber reemplazado 'nombre-del-proyecto' con el nombre real de tu proyecto. Asegúrate también de instalar el paquete @angular/common/http si no está instalado.
+
+Con estas configuraciones, deberías poder enviar correos electrónicos con datos de formulario y archivos adjuntos desde tu aplicación de Angular. Asegúrate de agregar la lógica de validación y seguridad necesaria en ambas partes del código.
+User
+hazme el html 
+ChatGPT
+
+Aquí tienes un ejemplo básico de cómo podrías configurar el HTML para tu componente de formulario en Angular:
+
+html
+
+<div>
+  <h2>Formulario de contacto</h2>
+  <form (ngSubmit)="enviarFormulario()">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" [(ngModel)]="formData.nombre" name="nombre" required><br><br>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" [(ngModel)]="formData.apellido" name="apellido" required><br><br>
+
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" [(ngModel)]="formData.dni" name="dni" required><br><br>
+
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" [(ngModel)]="formData.telefono" name="telefono" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" [(ngModel)]="formData.email" name="email" required><br><br>
+
+    <label for="descripcion">Descripción:</label><br>
+    <textarea id="descripcion" [(ngModel)]="formData.descripcion" name="descripcion" rows="4" cols="50" required></textarea><br><br>
+
+    <label for="archivos">Adjuntos:</label>
+    <input type="file" id="archivos" (change)="handleFileInput($event.target.files)" multiple><br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
+</div>
+
+En este ejemplo, estamos utilizando la directiva ngModel para enlazar los campos del formulario a las propiedades del componente en Angular. El botón de envío Enviar activará el método enviarFormulario() definido en el componente de TypeScript, y el método handleFileInput manejará la selección de archivos y los almacenará en la matriz files en el componente. Asegúrate de que los nombres de las propiedades coincidan con los nombres de las propiedades definidas en tu componente de TypeScript.
+User
+Object is possibly 'null'.ngtsc(2531)
+app.component.ts(5, 81): Error occurs in the template of component AppComponent.
+
+en el html 
+ChatGPT
+
+El mensaje de error "Object is possibly 'null'" es un error común que ocurre en TypeScript cuando se intenta acceder a propiedades de un objeto que podrían ser nulas o indefinidas. Para solucionar este error, puedes agregar comprobaciones para asegurarte de que las propiedades no sean nulas antes de acceder a ellas.
+
+Aquí te muestro cómo puedes realizar comprobaciones nulas en tu componente TypeScript y tu plantilla HTML:
+
+typescript
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-formulario',
+  templateUrl: './formulario.component.html',
+  styleUrls: ['./formulario.component.css']
+})
+export class FormularioComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  enviarFormulario() {
+    const formData = new FormData();
+    formData.append('nombre', this.formData.nombre ?? '');
+    formData.append('apellido', this.formData.apellido ?? '');
+    formData.append('dni', this.formData.dni ?? '');
+    formData.append('telefono', this.formData.telefono ?? '');
+    formData.append('email', this.formData.email ?? '');
+    formData.append('descripcion', this.formData.descripcion ?? '');
+    this.files.forEach((file, index) => {
+      formData.append('files', file, file.name);
+    });
+
+    this.http.post('http://localhost:3000/send-email', formData)
+      .subscribe((response) => {
+        console.log('Correo electrónico enviado con éxito');
+      }, (error) => {
+        console.error('Error al enviar el correo electrónico:', error);
+      });
+  }
+
+  handleFileInput(files: FileList | null) {
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        this.files.push(files.item(i) as File);
+      }
+    }
+  }
+}
+
+En tu archivo HTML, puedes realizar comprobaciones nulas similares para evitar el error:
+
+html
+
+<input type="text" id="nombre" [(ngModel)]="formData?.nombre" name="nombre" required><br><br>
+<input type="text" id="apellido" [(ngModel)]="formData?.apellido" name="apellido" required><br><br>
+<input type="text" id="dni" [(ngModel)]="formData?.dni" name="dni" required><br><br>
+<input type="text" id="telefono" [(ngModel)]="formData?.telefono" name="telefono" required><br><br>
+<input type="email" id="email" [(ngModel)]="formData?.email" name="email" required><br><br>
+<textarea id="descripcion" [(ngModel)]="formData?.descripcion" name="descripcion" rows="4" cols="50" required></textarea><br><br>
+
+Al agregar estas comprobaciones nulas, te aseguras de que no se produzcan errores al intentar acceder a propiedades que podrían ser nulas. Esto ayuda a evitar problemas potenciales cuando las propiedades pueden no estar definidas.
+User
+Object is possibly 'null'.ngtsc(2531)
+app.component.ts(5, 81): Error occurs in the template of component AppComponent.
+Property 'files' does not exist on type 'EventTarget'.ngtsc(2339)
+
+
+en este input: 
+
+  <input type="file" id="archivos" (change)="handleFileInput($event.target.files)" multiple><br><br>
+ChatGPT
+
+El mensaje de error "Property 'files' does not exist on type 'EventTarget'" ocurre porque event.target devuelve un EventTarget en TypeScript, y EventTarget no tiene una propiedad files. Para solucionar este problema, puedes usar la interfaz HTMLInputElement para asegurarte de que event.target se trate como un elemento de entrada de HTML.
+
+Aquí tienes el código corregido:
+
+typescript
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-formulario',
+  templateUrl: './formulario.component.html',
+  styleUrls: ['./formulario.component.css']
+})
+export class FormularioComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  enviarFormulario() {
+    const formData = new FormData();
+    formData.append('nombre', this.formData.nombre ?? '');
+    formData.append('apellido', this.formData.apellido ?? '');
+    formData.append('dni', this.formData.dni ?? '');
+    formData.append('telefono', this.formData.telefono ?? '');
+    formData.append('email', this.formData.email ?? '');
+    formData.append('descripcion', this.formData.descripcion ?? '');
+    this.files.forEach((file, index) => {
+      formData.append('files', file, file.name);
+    });
+
+    this.http.post('http://localhost:3000/send-email', formData)
+      .subscribe((response) => {
+        console.log('Correo electrónico enviado con éxito');
+      }, (error) => {
+        console.error('Error al enviar el correo electrónico:', error);
+      });
+  }
+
+  handleFileInput(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.files) {
+      for (let i = 0; i < target.files.length; i++) {
+        this.files.push(target.files.item(i) as File);
+      }
+    }
+  }
+}
+
+En tu archivo HTML, no es necesario realizar ningún cambio.
+
+Con estas correcciones, deberías poder manejar la entrada de archivos correctamente en tu aplicación Angular y evitar los errores relacionados con el EventTarget y la propiedad files.
+User
+sigue el mismo error en ese input del html 
+ChatGPT
+
+El error que estás experimentando indica que TypeScript no reconoce la propiedad 'files' en 'EventTarget'. Para solucionar esto, puedes usar el operador de aserción 'as' para indicarle a TypeScript que el objetivo del evento es en realidad un elemento de entrada de HTML que tiene la propiedad 'files'. Aquí te muestro cómo hacerlo:
+
+html
+
+<div>
+  <h2>Formulario de contacto</h2>
+  <form (ngSubmit)="enviarFormulario()">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" [(ngModel)]="formData.nombre" name="nombre" required><br><br>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" [(ngModel)]="formData.apellido" name="apellido" required><br><br>
+
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" [(ngModel)]="formData.dni" name="dni" required><br><br>
+
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" [(ngModel)]="formData.telefono" name="telefono" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" [(ngModel)]="formData.email" name="email" required><br><br>
+
+    <label for="descripcion">Descripción:</label><br>
+    <textarea id="descripcion" [(ngModel)]="formData.descripcion" name="descripcion" rows="4" cols="50" required></textarea><br><br>
+
+    <label for="archivos">Adjuntos:</label>
+    <input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
+</div>
+
+En el componente de TypeScript, necesitarás hacer algunos cambios también:
+
+typescript
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http;
+
+@Component({
+  selector: 'app-formulario',
+  templateUrl: './formulario.component.html',
+  styleUrls: ['./formulario.component.css']
+})
+export class FormularioComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  enviarFormulario() {
+    const formData = new FormData();
+    formData.append('nombre', this.formData.nombre);
+    formData.append('apellido', this.formData.apellido);
+    formData.append('dni', this.formData.dni);
+    formData.append('telefono', this.formData.telefono);
+    formData.append('email', this.formData.email);
+    formData.append('descripcion', this.formData.descripcion);
+    this.files.forEach((file, index) => {
+      formData.append('files', file, file.name);
+    });
+
+    this.http.post('http://localhost:3000/send-email', formData)
+      .subscribe((response) => {
+        console.log('Correo electrónico enviado con éxito');
+      }, (error) => {
+        console.error('Error al enviar el correo electrónico:', error);
+      });
+  }
+
+  handleFileInput(event: any) {
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        this.files.push(files[i]);
+      }
+    }
+  }
+}
+
+Al utilizar event.target.files en el manejador de eventos, te aseguras de que estás accediendo a la propiedad 'files' del elemento de entrada de HTML. Estos cambios deberían solucionar los errores que estás experimentando.
+User
+como ejecuto mi backend? 
+
+
+este es el server : 
+
+const express = require('express');
+const nodemailer = require('nodemailer');
+const multer = require('multer');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+app.post('/send-email', upload.array('files'), (req, res) => {
+  const { nombre, apellido, dni, telefono, email, descripcion } = req.body;
+
+  const transporter = nodemailer.createTransport({
+    host: 'mail.eprern.gov.ar',
+    port: 587,
+    auth: {
+      user: 'lavila@eprern.gov.ar',
+      pass: '**********'
+    }
+  });
+
+  const mailOptions = {
+    from: 'lavila@eprern.gov.ar',
+    to: 'lautiavila96@gmail.com',
+    subject: 'Nuevo formulario de contacto',
+    text: `
+      Nombre: ${nombre}
+      Apellido: ${apellido}
+      DNI: ${dni}
+      Teléfono: ${telefono}
+      Email: ${email}
+      Descripción: ${descripcion}
+    `,
+    attachments: req.files.map((file) => ({
+      filename: file.originalname,
+      content: file.buffer
+    }))
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send('Error al enviar el correo electrónico');
+    } else {
+      console.log('Correo electrónico enviado: ' + info.response);
+      res.status(200).send('Correo electrónico enviado con éxito');
+    }
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+ChatGPT
+
+Para ejecutar tu servidor backend, primero debes asegurarte de tener Node.js instalado en tu máquina. Luego, sigue estos pasos:
+
+    Abre una terminal o línea de comandos.
+    Navega hasta el directorio donde tienes tu archivo server.js.
+    Ejecuta el siguiente comando para iniciar el servidor:
+
+bash
+
+node server.js
+
+Esto iniciará tu servidor backend y lo ejecutará en el puerto 3000, a menos que se especifique otro puerto mediante la variable de entorno PORT.
+
+Asegúrate de que no haya ningún error en tu código antes de ejecutar el servidor. Si todo está configurado correctamente, deberías ver el mensaje "Servidor escuchando en el puerto 3000" en tu terminal, lo que significa que tu servidor está en funcionamiento y escuchando las solicitudes en el puerto 3000. Si observas algún error o problema durante la ejecución del servidor, asegúrate de verificar los mensajes de error en la terminal y corregir los problemas correspondientes en tu código.
+User
+en el navegador: 
+Error al enviar el correo electrónico: 
+Object { headers: {…}, status: 500, statusText: "Internal Server Error", url: "http://localhost:3000/send-email", ok: false, name: "HttpErrorResponse", message: "Http failure response for http://localhost:3000/send-email: 500 Internal Server Error", error: "Error al enviar el correo electrónico" }
+
+
+en la consola: 
+
+
+
+Hostname/IP does not match certificate's altnames: Host: mail.eprern.gov.ar. is not in the cert's altnames: DNS:tera3.teraserver.com.ar
+ChatGPT
+
+El error "Hostname/IP does not match certificate's altnames" generalmente ocurre cuando el nombre del host o la dirección IP en la solicitud no coincide con los nombres alternativos especificados en el certificado SSL del servidor de correo.
+
+Para resolver este problema, puedes intentar desactivar la verificación de certificados SSL en Nodemailer y permitir conexiones inseguras. Esto se puede lograr agregando la propiedad tls a la configuración de transporte de Nodemailer y estableciendo rejectUnauthorized en false.
+
+Aquí está el ajuste que puedes realizar en tu código:
+
+javascript
+
+const transporter = nodemailer.createTransport({
+  host: 'mail.eprern.gov.ar',
+  port: 587,
+  auth: {
+    user: 'lavila@eprern.gov.ar',
+    pass: '**********'
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+Asegúrate de reiniciar tu servidor después de realizar estos cambios. Sin embargo, ten en cuenta que esto deshabilita la verificación de certificados SSL, lo que podría no ser seguro en un entorno de producción. Para evitar este problema en un entorno de producción, necesitarás asegurarte de que el nombre del host o la dirección IP en la solicitud coincidan con los nombres alternativos especificados en el certificado SSL del servidor de correo.
+User
+como hago para enviar el mail a varios destinatarios? es posible ? 
+
+  const mailOptions = {
+    from: 'lavila@eprern.gov.ar',
+    to: 'lavila@eprern.gov.ar',
+    subject: 'Nuevo formulario de contacto',
+    text: `
+      Nombre: ${nombre}
+      Apellido: ${apellido}
+      DNI: ${dni}
+      Teléfono: ${telefono}
+      Email: ${email}
+      Descripción: ${descripcion}
+    `,
+    attachments: req.files.map((file) => ({
+      filename: file.originalname,
+      content: file.buffer
+    }))
+  };
+
+
+asi lo tengo ahora, y quisiera agregar otros correos destinatarios 
+ChatGPT
+
+Para enviar correos electrónicos a varios destinatarios, puedes simplemente separar las direcciones de correo electrónico con comas dentro del campo 'to'. Aquí te muestro cómo puedes hacerlo:
+
+javascript
+
+const destinatarios = 'lavila@eprern.gov.ar, otrodestinatario1@example.com, otrodestinatario2@example.com';
+
+const mailOptions = {
+  from: 'lavila@eprern.gov.ar',
+  to: destinatarios,
+  subject: 'Nuevo formulario de contacto',
+  text: `
+    Nombre: ${nombre}
+    Apellido: ${apellido}
+    DNI: ${dni}
+    Teléfono: ${telefono}
+    Email: ${email}
+    Descripción: ${descripcion}
+  `,
+  attachments: req.files.map((file) => ({
+    filename: file.originalname,
+    content: file.buffer
+  }))
+};
+
+Simplemente agrega las direcciones de correo electrónico de los destinatarios separadas por comas en el campo 'to'. Esto enviará el mismo correo electrónico a múltiples destinatarios al mismo tiempo. Asegúrate de proporcionar direcciones de correo electrónico válidas y separarlas por comas de manera adecuada.
+User
+Cómo hago para limitar el tamaño de subida de adjuntos ? 
+El límite de tamaño que puede subirse en total es de 2,5MB sino se satura mi servidor de correos 
+ChatGPT
+
+Puedes limitar el tamaño de los archivos que se suben en tu servidor utilizando el middleware multer en combinación con algunas configuraciones adicionales. Aquí te muestro cómo puedes limitar el tamaño de los archivos adjuntos a 2.5 MB en tu servidor:
+
+javascript
+
+const express = require('express');
+const nodemailer = require('nodemailer');
+const multer = require('multer');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+const storage = multer.memoryStorage();
+const limits = {
+  fileSize: 2.5 * 1024 * 1024 // 2.5 MB (en bytes)
+};
+const upload = multer({ storage: storage, limits: { files: 5, fileSize: limits.fileSize } });
+
+app.post('/send-email', upload.array('files'), (req, res) => {
+  // Resto del código de envío de correo electrónico
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
+
+En el ejemplo anterior, hemos definido un límite de tamaño de archivo utilizando la opción fileSize en bytes. Puedes ajustar este valor según sea necesario para cumplir con tus requisitos específicos. Además, la opción files en el objeto de configuración limits indica el número máximo de archivos que se pueden subir en una sola solicitud.
+
+Al implementar esta configuración en tu servidor, te aseguras de que los archivos adjuntos que superen el límite de tamaño especificado no se suban y, por lo tanto, no saturen tu servidor de correos.
+User
+y en angular quisiera hacer algun aviso para el usuario cuando excede ese tamaño de archivos .... 
+ChatGPT
+
+En Angular, puedes implementar un control de validación personalizado para verificar el tamaño de los archivos antes de cargarlos. Puedes utilizar el evento change del input de archivo para verificar el tamaño de los archivos seleccionados y mostrar un mensaje de error si exceden el límite especificado. Aquí tienes un ejemplo de cómo podrías hacerlo:
+
+En tu componente de Angular, podrías tener algo como esto:
+
+typescript
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-formulario',
+  templateUrl: './formulario.component.html',
+  styleUrls: ['./formulario.component.css']
+})
+export class FormularioComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+  maxSize: number = 2.5 * 1024 * 1024; // 2.5 MB en bytes
+  errorMessage: string = '';
+
+  constructor(private http: HttpClient) {}
+
+  enviarFormulario() {
+    // Resto del código para enviar el formulario
+  }
+
+  handleFileInput(event: any) {
+    this.errorMessage = '';
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > this.maxSize) {
+          this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB.';
+          this.files = [];
+          return;
+        }
+        this.files.push(files[i]);
+      }
+    }
+  }
+}
+
+Luego, en tu plantilla HTML, podrías mostrar el mensaje de error de la siguiente manera:
+
+html
+
+<input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+<p style="color: red;">{{ errorMessage }}</p>
+
+Con este código, se mostrará un mensaje de error debajo del campo de carga de archivos si algún archivo seleccionado excede el límite de tamaño especificado. Esto proporcionará retroalimentación inmediata al usuario para informarle que el archivo seleccionado es demasiado grande.
+User
+El email lo envía igual si supera el tamaño de archivos, solo que el correo llega sin dichos adjuntos...
+
+Quisiera hacer una regla para que cuando supera el límite de tamaño, directamente no te permita enviar el correo 
+ChatGPT
+
+Para evitar que se envíen correos si se excede el límite de tamaño de archivos, puedes implementar una validación adicional en tu función enviarFormulario en tu componente de Angular. Puedes verificar si alguno de los archivos seleccionados excede el límite de tamaño y mostrar un mensaje de error al usuario si se encuentra un archivo que no cumple con el requisito.
+
+Aquí tienes un ejemplo de cómo puedes hacerlo:
+
+typescript
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-formulario',
+  templateUrl: './formulario.component.html',
+  styleUrls: ['./formulario.component.css']
+})
+export class FormularioComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+  maxSize: number = 2.5 * 1024 * 1024; // 2.5 MB en bytes
+  errorMessage: string = '';
+
+  constructor(private http: HttpClient) {}
+
+  enviarFormulario() {
+    for (let i = 0; i < this.files.length; i++) {
+      if (this.files[i].size > this.maxSize) {
+        this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB. No se puede enviar el formulario.';
+        return;
+      }
+    }
+
+    // Resto del código para enviar el formulario si pasa la validación de tamaño de archivos
+  }
+
+  handleFileInput(event: any) {
+    this.errorMessage = '';
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        this.files.push(files[i]);
+      }
+    }
+  }
+}
+
+En tu plantilla HTML, puedes mostrar el mensaje de error de la misma manera que se mostró en la respuesta anterior:
+
+html
+
+<input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+<p style="color: red;">{{ errorMessage }}</p>
+
+Con esta modificación, el formulario no se enviará si se detecta algún archivo que excede el límite de tamaño especificado. El mensaje de error se mostrará al usuario para indicarle que el formulario no se puede enviar debido a la presencia de archivos grandes.
+User
+como me quedaría mi codigo? ajusta con ese codigo que me mandaste : 
+
+TS: 
+
+import { Component } from '@angular/core';
+import { ServicesService } from './services.service';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  providers:[ServicesService]
+})
+export class AppComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+  maxSize: number = 2.5 * 1024 * 1024; // 2.5 MB en bytes
+  errorMessage: string = '';
+
+  constructor(private http: HttpClient) {}
+
+ 
+  enviarFormulario() {
+    const formData = new FormData();
+    formData.append('nombre', this.formData.nombre ?? '');
+    formData.append('apellido', this.formData.apellido ?? '');
+    formData.append('dni', this.formData.dni ?? '');
+    formData.append('telefono', this.formData.telefono ?? '');
+    formData.append('email', this.formData.email ?? '');
+    formData.append('descripcion', this.formData.descripcion ?? '');
+    this.files.forEach((file, index) => {
+      formData.append('files', file, file.name);
+    });
+
+    this.http.post('http://localhost:3000/send-email', formData)
+      .subscribe((response) => {
+        console.log('Correo electrónico enviado con éxito');
+      }, (error) => {
+        console.error('Error al enviar el correo electrónico:', error);
+      });
+  }
+
+  handleFileInput(event: any) {
+    this.errorMessage = '';
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > this.maxSize) {
+          this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB.';
+          this.files = [];
+          return;
+        }
+        this.files.push(files[i]);
+      }
+    }
+  }
+}
+
+
+HTML: 
+
+<div>
+  <h2>Formulario de contacto</h2>
+  <form (ngSubmit)="enviarFormulario()">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" [(ngModel)]="formData.nombre" name="nombre" required><br><br>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" [(ngModel)]="formData.apellido" name="apellido" required><br><br>
+
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" [(ngModel)]="formData.dni" name="dni" required><br><br>
+
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" [(ngModel)]="formData.telefono" name="telefono" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" [(ngModel)]="formData.email" name="email" required><br><br>
+
+    <label for="descripcion">Descripción:</label><br>
+    <textarea id="descripcion" [(ngModel)]="formData.descripcion" name="descripcion" rows="4" cols="50" required></textarea><br><br>
+
+    <label for="archivos">Adjuntos:</label>
+    <input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+    <p style="color: red;">{{ errorMessage }}</p>
+    
+    <button type="submit">Enviar</button>
+  </form>
+</div>
+ChatGPT
+
+Tu código se vería de la siguiente manera con las modificaciones sugeridas:
+
+TS:
+
+typescript
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+  maxSize: number = 2.5 * 1024 * 1024; // 2.5 MB en bytes
+  errorMessage: string = '';
+
+  constructor(private http: HttpClient) {}
+
+  enviarFormulario() {
+    for (let i = 0; i < this.files.length; i++) {
+      if (this.files[i].size > this.maxSize) {
+        this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB. No se puede enviar el formulario.';
+        return;
+      }
+    }
+
+    const formData = new FormData();
+    formData.append('nombre', this.formData.nombre ?? '');
+    formData.append('apellido', this.formData.apellido ?? '');
+    formData.append('dni', this.formData.dni ?? '');
+    formData.append('telefono', this.formData.telefono ?? '');
+    formData.append('email', this.formData.email ?? '');
+    formData.append('descripcion', this.formData.descripcion ?? '');
+    this.files.forEach((file, index) => {
+      formData.append('files', file, file.name);
+    });
+
+    this.http.post('http://localhost:3000/send-email', formData)
+      .subscribe((response) => {
+        console.log('Correo electrónico enviado con éxito');
+      }, (error) => {
+        console.error('Error al enviar el correo electrónico:', error);
+      });
+  }
+
+  handleFileInput(event: any) {
+    this.errorMessage = '';
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > this.maxSize) {
+          this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB.';
+          this.files = [];
+          return;
+        }
+        this.files.push(files[i]);
+      }
+    }
+  }
+}
+
+HTML:
+
+html
+
+<div>
+  <h2>Formulario de contacto</h2>
+  <form (ngSubmit)="enviarFormulario()">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" [(ngModel)]="formData.nombre" name="nombre" required><br><br>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" [(ngModel)]="formData.apellido" name="apellido" required><br><br>
+
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" [(ngModel)]="formData.dni" name="dni" required><br><br>
+
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" [(ngModel)]="formData.telefono" name="telefono" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" [(ngModel)]="formData.email" name="email" required><br><br>
+
+    <label for="descripcion">Descripción:</label><br>
+    <textarea id="descripcion" [(ngModel)]="formData.descripcion" name="descripcion" rows="4" cols="50" required></textarea><br><br>
+
+    <label for="archivos">Adjuntos:</label>
+    <input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+    <p style="color: red;">{{ errorMessage }}</p>
+    
+    <button type="submit">Enviar</button>
+  </form>
+</div>
+
+Con estas modificaciones, el formulario no se enviará si algún archivo supera el límite de tamaño especificado y se mostrará un mensaje de error al usuario.
+User
+me sigue enviando el correo de todas formas.... Me debería de rechazar...  o inhabilitar el botón .... lo más efectivo va a ser inhabilitar el botón me parece porque esto no está funcionando 
+ChatGPT
+
+Para deshabilitar el botón de envío cuando el tamaño del archivo excede el límite, puedes utilizar una variable de bandera que controla el estado del botón. Aquí te muestro cómo podrías modificar tu código para lograrlo:
+
+TS:
+
+typescript
+
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+  maxSize: number = 2.5 * 1024 * 1024; // 2.5 MB en bytes
+  errorMessage: string = '';
+  isButtonDisabled: boolean = false;
+
+  constructor(private http: HttpClient) {}
+
+  enviarFormulario() {
+    // Resto del código para enviar el formulario
+  }
+
+  handleFileInput(event: any) {
+    this.errorMessage = '';
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > this.maxSize) {
+          this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB.';
+          this.isButtonDisabled = true;
+          this.files = [];
+          return;
+        }
+        this.isButtonDisabled = false;
+        this.files.push(files[i]);
+      }
+    }
+  }
+}
+
+HTML:
+
+html
+
+<div>
+  <h2>Formulario de contacto</h2>
+  <form (ngSubmit)="enviarFormulario()">
+    <!-- Resto del formulario -->
+
+    <label for="archivos">Adjuntos:</label>
+    <input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+    <p style="color: red;">{{ errorMessage }}</p>
+    
+    <button type="submit" [disabled]="isButtonDisabled">Enviar</button>
+  </form>
+</div>
+
+Con esta modificación, el botón de envío se inhabilitará si el tamaño del archivo excede el límite especificado. Esto proporcionará una experiencia de usuario más clara y evitará el envío del formulario con archivos que superen el límite de tamaño.
+User
+NO SE DESHABILITA.... EL BOTÓN SIGUE IGUAL CUANDO SUBO UN ARCHIVO GRANDE.... 
+
+HTML: 
+<div>
+  <h2>Formulario de contacto</h2>
+  <form (ngSubmit)="enviarFormulario()">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" [(ngModel)]="formData.nombre" name="nombre" required><br><br>
+
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" [(ngModel)]="formData.apellido" name="apellido" required><br><br>
+
+    <label for="dni">DNI:</label>
+    <input type="text" id="dni" [(ngModel)]="formData.dni" name="dni" required><br><br>
+
+    <label for="telefono">Teléfono:</label>
+    <input type="text" id="telefono" [(ngModel)]="formData.telefono" name="telefono" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" [(ngModel)]="formData.email" name="email" required><br><br>
+
+    <label for="descripcion">Descripción:</label><br>
+    <textarea id="descripcion" [(ngModel)]="formData.descripcion" name="descripcion" rows="4" cols="50" required></textarea><br><br>
+
+    <label for="archivos">Adjuntos:</label>
+    <input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+    <p style="color: red;">{{ errorMessage }}</p>
+    
+    <button type="submit" [disabled]="isButtonDisabled">Enviar</button>
+  </form>
+</div>
+
+
+TS: 
+import { Component } from '@angular/core';
+import { ServicesService } from './services.service';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  providers:[ServicesService]
+})
+export class AppComponent {
+  formData = {
+    nombre: '',
+    apellido: '',
+    dni: '',
+    telefono: '',
+    email: '',
+    descripcion: ''
+  };
+  files: File[] = [];
+  maxSize: number = 2.5 * 1024 * 1024; // 2.5 MB en bytes
+  errorMessage: string = '';
+  isButtonDisabled: boolean = false;
+
+
+  constructor(private http: HttpClient) {}
+
+ 
+  enviarFormulario() {
+    for (let i = 0; i < this.files.length; i++) {
+      if (this.files[i].size > this.maxSize) {
+        this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB. No se puede enviar el formulario.';
+        this.isButtonDisabled = true;
+        return;
+      }
+    }
+
+    const formData = new FormData();
+    formData.append('nombre', this.formData.nombre ?? '');
+    formData.append('apellido', this.formData.apellido ?? '');
+    formData.append('dni', this.formData.dni ?? '');
+    formData.append('telefono', this.formData.telefono ?? '');
+    formData.append('email', this.formData.email ?? '');
+    formData.append('descripcion', this.formData.descripcion ?? '');
+    this.files.forEach((file, index) => {
+      formData.append('files', file, file.name);
+    });
+
+    this.http.post('http://localhost:3000/send-email', formData)
+      .subscribe((response) => {
+        console.log('Correo electrónico enviado con éxito');
+      }, (error) => {
+        console.error('Error al enviar el correo electrónico:', error);
+      });
+  }
+
+  handleFileInput(event: any) {
+    this.errorMessage = '';
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > this.maxSize) {
+          this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB.';
+          this.files = [];
+          return;
+        }
+        this.isButtonDisabled = false;
+        this.files.push(files[i]);
+      }
+    }
+  }
+}
+ChatGPT
+
+El problema puede surgir si estás restableciendo isButtonDisabled a false dentro del bucle for que comprueba el tamaño de los archivos. Esto puede causar que isButtonDisabled se restablezca a false incluso si un solo archivo supera el límite de tamaño permitido.
+
+Para solucionarlo, debes restablecer isButtonDisabled a false antes del bucle for, y luego establecerlo en true dentro del bloque condicional que maneja el caso en el que el archivo excede el límite de tamaño. Aquí tienes el código modificado para tu función handleFileInput:
+
+typescript
+
+handleFileInput(event: any) {
+  this.errorMessage = '';
+  this.isButtonDisabled = false; // Restablecer a falso antes de la verificación
+
+  const files = event.target.files;
+  if (files) {
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].size > this.maxSize) {
+        this.errorMessage = 'El tamaño del archivo excede el límite permitido de 2.5MB.';
+        this.isButtonDisabled = true; // Establecer en verdadero si un archivo excede el límite
+        this.files = [];
+        return;
+      }
+      this.files.push(files[i]);
+    }
+  }
+}
+
+Con esta modificación, el botón de envío se deshabilitará correctamente cuando un archivo supere el límite de tamaño especificado. Asegúrate de implementar este cambio y prueba el comportamiento nuevamente para confirmar que el botón se deshabilita correctamente en el escenario adecuado.
+User
+Cómo hago para insertar una URL de un tutorial de winrar para comprimir un archivo, asi el usuario puede comprimirlo
+
+Quise hacerlo de esta manera pero no me aparece el link en pantalla: 
+
+this.errorMessage = 'El tamaño del archivo excede el límite permitido de 10MB. Intente comprimir los archivos, si no sabe como haga click aqui: ', "https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar";
+ChatGPT
+
+Para mostrar un enlace en tu mensaje de error, debes agregarlo correctamente al string para que se interprete como parte del texto. Puedes hacerlo de la siguiente manera:
+
+typescript
+
+this.errorMessage = 'El tamaño del archivo excede el límite permitido de 10MB. Intente comprimir los archivos, si no sabe cómo, haga clic aquí: https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar';
+
+En el código proporcionado, el enlace se agrega directamente al texto de errorMessage como parte del string. Asegúrate de que el mensaje de error se esté mostrando correctamente en tu plantilla HTML para que el enlace aparezca y sea funcional.
+User
+Pero no me lo reconoce como una URL, no me sirve eso, quiero que me tome la URL esa asi directamente le hago click y me envía a la página en una nueva pestaña 
+ChatGPT
+
+Para crear un enlace HTML en el mensaje de error y asegurarte de que sea reconocido como un enlace por el navegador, debes incluirlo en el código HTML y no solo en la cadena de texto. Aquí tienes cómo puedes hacerlo:
+
+typescript
+
+this.errorMessage = 'El tamaño del archivo excede el límite permitido de 10MB. Intente comprimir los archivos, si no sabe cómo, haga clic <a href="https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar" target="_blank">aquí</a>.';
+
+Al incluir el enlace como parte del texto de errorMessage utilizando la etiqueta <a> de HTML, se renderizará como un enlace en tu plantilla. Asegúrate de que errorMessage se esté interpretando correctamente como HTML en tu plantilla para que el enlace aparezca y sea funcional.
+User
+no me funciona ... no me lo toma al link ...
+
+ts: 
+
+ handleFileInput(event: any) {
+    this.errorMessage = '';
+    this.isButtonDisabled = false; // Restablecer a falso antes de la verificación
+  
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].size > this.maxSize) {
+          this.errorMessage = 'El tamaño del archivo excede el límite permitido de 10MB. Intente comprimir los archivos, si no sabe cómo, haga clic <a href="https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar" target="_blank">aquí</a>.';
+
+          this.isButtonDisabled = true; // Establecer en verdadero si un archivo excede el límite
+          this.files = [];
+          return;
+        }
+        this.files.push(files[i]);
+      }
+    }
+  }
+
+
+html : 
+ <label for="archivos">Adjuntos:</label>
+    <input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+    <p style="color: red;">{{ errorMessage }}</p>
+    
+    <button type="submit" [disabled]="isButtonDisabled">Enviar</button>
+ChatGPT
+
+Para mostrar un enlace HTML en el mensaje de error, asegúrate de que tu plantilla HTML esté interpretando el contenido de errorMessage como HTML. Puedes hacerlo utilizando la directiva innerHTML. Aquí te muestro cómo hacerlo:
+
+TS:
+
+typescript
+
+handleFileInput(event: any) {
+  this.errorMessage = '';
+  this.isButtonDisabled = false; // Restablecer a falso antes de la verificación
+
+  const files = event.target.files;
+  if (files) {
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].size > this.maxSize) {
+        this.errorMessage = 'El tamaño del archivo excede el límite permitido de 10MB. Intente comprimir los archivos, si no sabe cómo, haga clic <a href="https://www.winrar.es/soporte/compresion/40/como-comprimir-ficheros-con-winrar" target="_blank">aquí</a>.';
+
+        this.isButtonDisabled = true; // Establecer en verdadero si un archivo excede el límite
+        this.files = [];
+        return;
+      }
+      this.files.push(files[i]);
+    }
+  }
+}
+
+HTML:
+
+html
+
+<label for="archivos">Adjuntos:</label>
+<input type="file" id="archivos" (change)="handleFileInput($event)" multiple><br><br>
+<p style="color: red;" [innerHTML]="errorMessage"></p>
+
+<button type="submit" [disabled]="isButtonDisabled">Enviar</button>
+
+Al usar la directiva innerHTML en tu plantilla HTML, Angular interpretará el contenido de errorMessage como HTML y mostrará el enlace correctamente. Asegúrate de implementar este cambio en tu código y comprueba si el enlace se muestra y es funcional en tu aplicación.
