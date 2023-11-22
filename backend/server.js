@@ -1,11 +1,21 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 const multer = require('multer');
 const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: ['https://655d818e01df1a493c2f221b--fabulous-marshmallow-099f6c.netlify.app'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    optionsSuccessStatus: 204,
+    credentials: true,  // Habilita el intercambio de cookies y credenciales
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+
 app.use(express.json());
 
 const storage = multer.memoryStorage();
@@ -18,7 +28,35 @@ const upload = multer({
     limits: { files: 5, fileSize: limits.fileSize }
 });
 
-app.post('/api/send-email', upload.array('files'), (req, res) => {
+const mail_rover = async (callback) => {
+    const oauth2Client = new OAuth2(
+        "417669951457-ridlkaari6jei02nj0jtianhe4i96kfh.apps.googleusercontent.com",
+        "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",
+        "https://developers.google.com/oauthplayground",
+    );
+
+    oauth2Client.setCredentials({
+        refresh_token: "1//04x7gEHkUSub0CgYIARAAGAQSNwF-L9IrtUZMyM0uKMW45H4RHJZSenLuyIVQGew91CDuBDToN1J2_McA-uaNpSKh-ll87Sb--t8"
+    });
+
+    const accessToken = await oauth2Client.getAccessToken();
+
+    callback(nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: 'lautiavila96@gmail.com',
+            clientId: '417669951457-ridlkaari6jei02nj0jtianhe4i96kfh.apps.googleusercontent.com',
+            clientSecret: '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',
+            refreshToken: '1//04x7gEHkUSub0CgYIARAAGAQSNwF-L9IrtUZMyM0uKMW45H4RHJZSenLuyIVQGew91CDuBDToN1J2_McA-uaNpSKh-ll87Sb--t8',
+            accessToken: accessToken.token,
+        }
+    }));
+};
+
+
+app.post('/api/send-email', cors(), upload.array('files'), (req, res) => {
+   
 
     const {
         nombre,
@@ -48,26 +86,21 @@ app.post('/api/send-email', upload.array('files'), (req, res) => {
         facturaFueraDeTermino
     } = req.body;
 
-    const transporter = nodemailer.createTransport({
-        host: 'mail.eprern.gov.ar',
-        port: 587,
-        auth: {
-            user: 'administrador@eprern.gov.ar',
-            pass: 'c1G482ur@37'
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
 
-    const destinatarios = 'lavila@eprern.gov.ar, dsilvera@eprern.gov.ar, pbejarano@eprern.gov.ar';
+    mail_rover((transporter) => {
+        const destinatarios = 'lauti_avila96@hotmail.com, lautiavila96@gmail.com, pbejarano@eprern.gov.ar';
 
 
-    const mailOptions = {
-        from: 'administrador@eprern.gov.ar',
-        to: destinatarios,
-        subject: 'Nuevo formulario de Reclamos',
-        html: `
+
+
+
+
+
+        const mailOptions = {
+            from: 'lautiavila96@gmail.com',
+            to: destinatarios,
+            subject: 'Nuevo formulario de Reclamos',
+            html: `
         <h1><FONT color="#69b545"><u>Datos del USUARIO</u></FONT></h1>
         <br>
         
@@ -114,20 +147,21 @@ app.post('/api/send-email', upload.array('files'), (req, res) => {
         
 
     `,
-        attachments: req.files.map((file) => ({
-            filename: file.originalname,
-            content: file.buffer
-        }))
-    };
+            attachments: req.files.map((file) => ({
+                filename: file.originalname,
+                content: file.buffer
+            }))
+        };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-            res.status(500).send('Error al enviar el correo electrónico');
-        } else {
-            console.log('Correo electrónico enviado: ' + info.response);
-            res.status(200).send('Correo electrónico enviado con éxito');
-        }
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                res.status(500).send('Error al enviar el correo electrónico');
+            } else {
+                console.log('Correo electrónico enviado: ' + info.response);
+                res.status(200).send('Correo electrónico enviado con éxito');
+            }
+        });
     });
 });
 

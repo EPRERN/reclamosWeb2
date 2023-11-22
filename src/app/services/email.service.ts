@@ -7,12 +7,20 @@ import { Observable } from 'rxjs';
 })
 export class EmailService {
 
-  // private baseUrl = 'http://192.168.2.209:3000/send-email';
-  private baseUrl = 'http://localhost:3000/api/send-email';
+  // Actualiza con la URL proporcionada por Ngrok o la IP pública de tu router
+  private baseUrl = 'https://tunel.ngrok.io/api/send-email';
 
   constructor(private http: HttpClient) {}
 
   sendEmailWithAttachment(formData: FormData): Observable<any> {
-    return this.http.post(this.baseUrl, formData);
+    return this.http.post(this.baseUrl, formData, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Credentials': 'true'
+      },
+    });
   }
 }

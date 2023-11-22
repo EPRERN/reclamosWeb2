@@ -24,6 +24,7 @@
     "browserify-zlib": "^0.2.0",
     "crypto-browserify": "^3.12.0",
     "flowbite": "^2.0.0",
+    "googleapis": "^128.0.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "ng-recaptcha": "^12.0.2",
