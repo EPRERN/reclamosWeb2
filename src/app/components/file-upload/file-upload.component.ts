@@ -30,7 +30,7 @@ export class FileUploadComponent {
   }
   registerOnChange(fn: any): void {}
   registerOnTouched(fn: any): void {
-    // Implementa esto si necesitas registrar la función de "touched"
+    
   }
   constructor(private cdr: ChangeDetectorRef) { }
 
@@ -38,12 +38,14 @@ export class FileUploadComponent {
   onFileSelected(event: any) {
 
     const files: FileList = event.target.files;
+    console.log('Archivos seleccionados:', files);
+
     this.filesSelected.emit(files);
 
-    // const files: File[] = event.target.files;
+    
     let totalSize = this.getTotalSize();
 
-    // Verificar si agregar los nuevos archivos excede el límite de tamaño total
+   
     for (let i = 0; i < files.length; i++) {
       if (totalSize + files[i].size > this.maxSize) {
         this.errorMessage = 'El tamaño total de los archivos excede el límite permitido de 10MB.';
@@ -53,7 +55,7 @@ export class FileUploadComponent {
       }
     }
 
-    // Agregar archivos a la lista
+   
     this.selectedFiles.push(...Array.from(files));
   }
 
@@ -62,16 +64,16 @@ export class FileUploadComponent {
   }
 
   clearFiles() {
-    // console.log('Clearing files...');
+   
     this.selectedFiles = [];
-    this.errorMessage = '';  // Restablecer el mensaje de error
-    // console.log('Files cleared:', this.selectedFiles);
+    this.errorMessage = ''; 
+    
   }
 
   private getTotalSize(): number {
     let totalSize = 0;
 
-    // Calcular el tamaño total de los archivos seleccionados
+   
     for (let i = 0; i < this.selectedFiles.length; i++) {
       totalSize += this.selectedFiles[i].size;
     }

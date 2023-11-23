@@ -283,9 +283,10 @@ export class FormularioComponent implements OnInit {
 
     if (this.formularioReclamo.valid) {
 
-      // console.log('Valor de descripcion:', this.formularioReclamo.value.descripcion);
-
+     
       const formData = new FormData();
+      console.log('FormData antes de agregar datos:', formData);
+
 
       Object.keys(this.formularioReclamo.value).forEach((key) => {
         const value = this.formularioReclamo.value[key];
@@ -300,7 +301,7 @@ export class FormularioComponent implements OnInit {
         }
       });
 
-      // console.log('Archivos seleccionados:', this.files);
+      console.log('FormData después de agregar datos:', formData);
 
       if (this.files.length > 0) {
         this.files.forEach((file, index) => {
